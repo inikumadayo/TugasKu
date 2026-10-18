@@ -1,7 +1,9 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:adistyclone/assets/colors.dart';
 import 'package:adistyclone/models/schedule_model.dart';
 import 'package:adistyclone/models/task_model.dart';
 import 'package:adistyclone/models/user_profile_model.dart';
+import 'package:adistyclone/services/notification_service.dart';
 
 /// Database helper class yang mengelola semua operasi CRUD
 /// menggunakan Hive sebagai local NoSQL database.
@@ -9,6 +11,7 @@ class DatabaseHelper {
   static const String _scheduleBox = 'schedules';
   static const String _taskBox = 'tasks';
   static const String _profileBox = 'user_profile';
+  static const String _settingsBox = 'settings';
 
   /// Inisialisasi Hive — panggil di main() sebelum runApp()
   static Future<void> init() async {
@@ -16,6 +19,10 @@ class DatabaseHelper {
     await Hive.openBox(_scheduleBox);
     await Hive.openBox(_taskBox);
     await Hive.openBox(_profileBox);
+    await Hive.openBox(_settingsBox);
+
+    // Load saved theme preference
+    _loadThemePreference();
   }
 
   // ============================================================
@@ -28,6 +35,7 @@ class DatabaseHelper {
   /// Tambah jadwal baru
   static Future<void> addSchedule(ScheduleModel schedule) async {
     await _schedules.put(schedule.id, schedule.toMap());
+    await NotificationService.scheduleClassNotification(schedule);
   }
 
   /// Ambil semua jadwal
@@ -46,11 +54,13 @@ class DatabaseHelper {
   /// Update jadwal
   static Future<void> updateSchedule(ScheduleModel schedule) async {
     await _schedules.put(schedule.id, schedule.toMap());
+    await NotificationService.scheduleClassNotification(schedule);
   }
 
   /// Hapus jadwal
   static Future<void> deleteSchedule(String id) async {
     await _schedules.delete(id);
+    await NotificationService.cancelClassNotification(id);
   }
 
   /// Ambil jadwal berdasarkan ID
@@ -70,6 +80,7 @@ class DatabaseHelper {
   /// Tambah tugas baru
   static Future<void> addTask(TaskModel task) async {
     await _tasks.put(task.id, task.toMap());
+    await NotificationService.scheduleTaskNotification(task);
   }
 
   /// Ambil semua tugas
@@ -96,17 +107,28 @@ class DatabaseHelper {
     if (task != null) {
       task.isCompleted = !task.isCompleted;
       await _tasks.put(id, task.toMap());
+      if (task.isCompleted) {
+        await NotificationService.cancelTaskNotification(id);
+      } else {
+        await NotificationService.scheduleTaskNotification(task);
+      }
     }
   }
 
   /// Update tugas
   static Future<void> updateTask(TaskModel task) async {
     await _tasks.put(task.id, task.toMap());
+    if (task.isCompleted) {
+      await NotificationService.cancelTaskNotification(task.id);
+    } else {
+      await NotificationService.scheduleTaskNotification(task);
+    }
   }
 
   /// Hapus tugas
   static Future<void> deleteTask(String id) async {
     await _tasks.delete(id);
+    await NotificationService.cancelTaskNotification(id);
   }
 
   /// Ambil tugas berdasarkan ID
@@ -309,5 +331,151 @@ class DatabaseHelper {
 
     // Tandai bahwa seeding pertama kali sudah selesai
     await _profile.put('has_seeded_initial_data', true);
+  }
+
+  // ============================================================
+  //  SETTINGS (Tema & Preferensi Aplikasi)
+  // ============================================================
+
+  /// Mendapatkan box settings
+  static Box get _settings => Hive.box(_settingsBox);
+
+  /// Muat preferensi tema dari database saat init
+  static void _loadThemePreference() {
+    if (!Hive.isBoxOpen(_settingsBox)) return;
+    final isDark = (_settings.get('is_dark_mode') as bool?) ?? false;
+    ColorsTheme.setDarkMode(isDark);
+  }
+
+  /// Simpan dan terapkan preferensi tema
+  static Future<void> setThemeDarkMode(bool isDark) async {
+    final box = Hive.isBoxOpen(_settingsBox)
+        ? Hive.box(_settingsBox)
+        : await Hive.openBox(_settingsBox);
+    await box.put('is_dark_mode', isDark);
+    ColorsTheme.setDarkMode(isDark);
+  }
+
+  /// Ambil status tema saat ini
+  static bool getIsDarkMode() {
+    if (!Hive.isBoxOpen(_settingsBox)) return false;
+    return (_settings.get('is_dark_mode') as bool?) ?? false;
+  }
+
+  /// Apakah pengingat tugas aktif
+  static bool isTaskReminderEnabled() {
+    if (!Hive.isBoxOpen(_settingsBox)) return true;
+    return (_settings.get('pengingat_tugas') as bool?) ?? true;
+  }
+
+  /// Atur status pengingat tugas
+  static Future<void> setTaskReminderEnabled(bool enabled) async {
+    final box = Hive.isBoxOpen(_settingsBox)
+        ? Hive.box(_settingsBox)
+        : await Hive.openBox(_settingsBox);
+    await box.put('pengingat_tugas', enabled);
+  }
+
+  /// Apakah notifikasi kuliah aktif
+  static bool isClassNotificationEnabled() {
+    if (!Hive.isBoxOpen(_settingsBox)) return true;
+    return (_settings.get('notifikasi_kuliah') as bool?) ?? true;
+  }
+
+  /// Atur status notifikasi kuliah
+  static Future<void> setClassNotificationEnabled(bool enabled) async {
+    final box = Hive.isBoxOpen(_settingsBox)
+        ? Hive.box(_settingsBox)
+        : await Hive.openBox(_settingsBox);
+    await box.put('notifikasi_kuliah', enabled);
+  }
+
+  // --- Pengaturan Waktu & Suara Notifikasi Kuliah ---
+  static int getClassNotificationTiming() {
+    if (!Hive.isBoxOpen(_settingsBox)) return 15;
+    return (_settings.get('kuliah_notif_timing') as int?) ?? 15;
+  }
+
+  static Future<void> setClassNotificationTiming(int minutes) async {
+    final box = Hive.isBoxOpen(_settingsBox)
+        ? Hive.box(_settingsBox)
+        : await Hive.openBox(_settingsBox);
+    await box.put('kuliah_notif_timing', minutes);
+  }
+
+  static String? getClassNotificationSoundPath() {
+    if (!Hive.isBoxOpen(_settingsBox)) return null;
+    return _settings.get('kuliah_notif_sound_path') as String?;
+  }
+
+  static String getClassNotificationSoundName() {
+    if (!Hive.isBoxOpen(_settingsBox)) return 'Default Sistem';
+    return (_settings.get('kuliah_notif_sound_name') as String?) ??
+        'Default Sistem';
+  }
+
+  static Future<void> setClassNotificationSound(
+    String? path,
+    String? name,
+  ) async {
+    final box = Hive.isBoxOpen(_settingsBox)
+        ? Hive.box(_settingsBox)
+        : await Hive.openBox(_settingsBox);
+    await box.put('kuliah_notif_sound_path', path);
+    await box.put('kuliah_notif_sound_name', name ?? 'Default Sistem');
+  }
+
+  // --- Pengaturan Waktu & Suara Pengingat Tugas ---
+  static int getTaskReminderTiming() {
+    if (!Hive.isBoxOpen(_settingsBox)) return 1440;
+    return (_settings.get('tugas_notif_timing') as int?) ?? 1440;
+  }
+
+  static Future<void> setTaskReminderTiming(int minutes) async {
+    final box = Hive.isBoxOpen(_settingsBox)
+        ? Hive.box(_settingsBox)
+        : await Hive.openBox(_settingsBox);
+    await box.put('tugas_notif_timing', minutes);
+  }
+
+  static String? getTaskReminderSoundPath() {
+    if (!Hive.isBoxOpen(_settingsBox)) return null;
+    return _settings.get('tugas_notif_sound_path') as String?;
+  }
+
+  static String getTaskReminderSoundName() {
+    if (!Hive.isBoxOpen(_settingsBox)) return 'Default Sistem';
+    return (_settings.get('tugas_notif_sound_name') as String?) ??
+        'Default Sistem';
+  }
+
+  static Future<void> setTaskReminderSound(
+    String? path,
+    String? name,
+  ) async {
+    final box = Hive.isBoxOpen(_settingsBox)
+        ? Hive.box(_settingsBox)
+        : await Hive.openBox(_settingsBox);
+    await box.put('tugas_notif_sound_path', path);
+    await box.put('tugas_notif_sound_name', name ?? 'Default Sistem');
+  }
+
+  // ============================================================
+  //  STATS HELPERS (untuk halaman profil)
+  // ============================================================
+
+  /// Jumlah jadwal kuliah di minggu ini (Senin-Jumat)
+  static int getWeeklyScheduleCount() {
+    return getAllSchedules().length;
+  }
+
+  /// Jumlah tugas aktif (belum selesai)
+  static int getActiveTaskCount() {
+    return getIncompleteTasks().length;
+  }
+
+  /// Jumlah tugas yang sudah selesai
+  static int getCompletedTaskCount() {
+    return getCompletedTasks().length;
   }
 }

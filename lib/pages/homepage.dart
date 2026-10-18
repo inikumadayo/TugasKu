@@ -35,6 +35,11 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+  /// Callback yang dipanggil saat tema berubah (dari halaman Setting)
+  void _onThemeChanged() {
+    setState(() {});
+  }
+
   // Menggunakan getter agar widget di-rebuild saat berpindah tab
   // sehingga data terbaru dari database selalu ditampilkan
   Widget _getPage(int index) {
@@ -46,7 +51,7 @@ class _HomepageState extends State<Homepage> {
       case 2:
         return Task();
       case 3:
-        return Setting();
+        return Setting(onThemeChanged: _onThemeChanged);
       default:
         return Dashboard();
     }
@@ -82,7 +87,7 @@ class _HomepageState extends State<Homepage> {
                   _selectedIndex = index;
                 });
               },
-              destinations: const [
+              destinations: [
                 NavigationDestination(
                   selectedIcon: Icon(
                     Icons.home_rounded,

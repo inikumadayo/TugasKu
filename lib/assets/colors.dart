@@ -32,7 +32,7 @@ class ColorsTheme {
 
   /// Nama tema yang readable untuk ditampilkan di UI
   static String get themeName =>
-      _isDarkMode ? 'Midnight Navy' : 'Blueberry Oat';
+      _isDarkMode ? 'Blueberry Oat Dark' : 'Blueberry Oat';
 }
 
 class ColorLight {

@@ -16,8 +16,7 @@ Future<void> showThemePickerSheet(
         child: Container(
           decoration: BoxDecoration(
             color: ColorsTheme.latarKomponen,
-            borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           ),
           padding: const EdgeInsets.fromLTRB(24, 12, 24, 24),
           child: Column(
@@ -66,7 +65,7 @@ Future<void> showThemePickerSheet(
 
               // Midnight Navy (Dark)
               _buildThemeOption(
-                name: 'Midnight Navy',
+                name: 'Blueberry Oat Dark',
                 subtitle: 'Tema gelap yang elegan',
                 colors: [
                   ColorDark.latar,

@@ -1,5 +1,7 @@
+import 'package:adistyclone/core/theme/app_theme.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
-import 'package:adistyclone/pages/homepage.dart';
+import 'package:adistyclone/presentation/screens/homepage.dart';
 import 'package:adistyclone/services/notification_service.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: Homepage());
+    return ValueListenableBuilder<bool>(
+      valueListenable: ColorsTheme.isDarkModeNotifier,
+      builder: (context, isDark, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+          home: const Homepage(),
+        );
+      },
+    );
   }
 }

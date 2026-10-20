@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/models/schedule_model.dart';
 import 'package:adistyclone/models/task_model.dart';
 import 'package:adistyclone/models/user_profile_model.dart';
@@ -105,12 +105,12 @@ class DatabaseHelper {
   static Future<void> toggleTaskCompletion(String id) async {
     final task = getTaskById(id);
     if (task != null) {
-      task.isCompleted = !task.isCompleted;
-      await _tasks.put(id, task.toMap());
-      if (task.isCompleted) {
+      final updatedTask = task.copyWith(isCompleted: !task.isCompleted);
+      await _tasks.put(id, updatedTask.toMap());
+      if (updatedTask.isCompleted) {
         await NotificationService.cancelTaskNotification(id);
       } else {
-        await NotificationService.scheduleTaskNotification(task);
+        await NotificationService.scheduleTaskNotification(updatedTask);
       }
     }
   }

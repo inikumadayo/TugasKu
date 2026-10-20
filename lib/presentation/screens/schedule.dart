@@ -1,13 +1,12 @@
-import 'dart:async';
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
+import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/schedule_model.dart';
-import 'package:adistyclone/utils/add_schedule_dialog.dart';
-import 'package:adistyclone/utils/delete_confirm_dialog.dart';
-import 'package:adistyclone/utils/filter_date.dart';
-import 'package:adistyclone/utils/schedule_item.dart';
+import 'package:adistyclone/presentation/widgets/cards/schedule_item.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/add_schedule_dialog.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/delete_confirm_dialog.dart';
+import 'package:adistyclone/presentation/widgets/filters/filter_date.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Schedule extends StatefulWidget {
   const Schedule({super.key});
@@ -23,47 +22,32 @@ class _ScheduleState extends State<Schedule> {
 
   // Data filter hari (akan digenerate otomatis dari minggu ini)
   late List<Map<String, dynamic>> _filterDays;
-  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _initDays();
     _loadSchedules();
+    DateTimeHelper.heartbeat.addListener(_onHeartbeat);
+  }
 
-    // Refresh berkala agar status jadwal aktif berganti secara realtime
-    _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      if (mounted) setState(() {});
-    });
+  void _onHeartbeat() {
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    DateTimeHelper.heartbeat.removeListener(_onHeartbeat);
     super.dispose();
   }
 
-  /// Generate daftar hari kerja (Senin-Jumat) dalam minggu ini
+  /// Generate daftar hari kerja (Senin-Sabtu) dalam minggu ini
   void _initDays() {
     final now = DateTime.now();
     // DateTime.weekday: 1=Monday ... 7=Sunday
     // Jika hari ini Minggu, default ke Senin
     _selectedHari = now.weekday <= 6 ? now.weekday : 1;
-
-    _filterDays = [];
-    // Cari Senin di minggu ini
-    final monday = now.subtract(Duration(days: now.weekday - 1));
-
-    const singkatanHari = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
-
-    for (int i = 0; i < 6; i++) {
-      final day = monday.add(Duration(days: i));
-      _filterDays.add({
-        'singkatan': singkatanHari[i],
-        'tanggal': day.day.toString(),
-        'hari': i + 1,
-      });
-    }
+    _filterDays = DateTimeHelper.getWorkDaysInWeek(now);
   }
 
   /// Load jadwal dari database berdasarkan hari yang dipilih
@@ -74,39 +58,12 @@ class _ScheduleState extends State<Schedule> {
   }
 
   /// Nama hari lengkap
-  String _getNamaHari(int hari) {
-    const days = [
-      '',
-      'Senin',
-      'Selasa',
-      'Rabu',
-      'Kamis',
-      'Jumat',
-      'Sabtu',
-      'Minggu',
-    ];
-    return days[hari];
-  }
+  String _getNamaHari(int hari) => DateTimeHelper.getNamaHari(hari);
 
   /// Format tanggal hari ini
   String _getFormattedDate() {
     final now = DateTime.now();
-    const months = [
-      '',
-      'Januari',
-      'Februari',
-      'Maret',
-      'April',
-      'Mei',
-      'Juni',
-      'Juli',
-      'Agustus',
-      'September',
-      'Oktober',
-      'November',
-      'Desember',
-    ];
-    return '${_getNamaHari(now.weekday)}, ${now.day} ${months[now.month]} ${now.year}';
+    return '${_getNamaHari(now.weekday)}, ${DateTimeHelper.getFormattedDate(now)}';
   }
 
   /// Tampilkan dialog untuk menambah jadwal baru
@@ -174,7 +131,6 @@ class _ScheduleState extends State<Schedule> {
                             color: ColorsTheme.teks,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            fontFamily: GoogleFonts.poppins().fontFamily,
                           ),
                         ),
                         SizedBox(height: 1),
@@ -183,7 +139,6 @@ class _ScheduleState extends State<Schedule> {
                           style: TextStyle(
                             color: ColorsTheme.teks,
                             fontSize: 14,
-                            fontFamily: GoogleFonts.poppins().fontFamily,
                           ),
                         ),
                       ],
@@ -253,7 +208,6 @@ class _ScheduleState extends State<Schedule> {
                               style: TextStyle(
                                 color: ColorsTheme.teksSekunder,
                                 fontSize: 14,
-                                fontFamily: GoogleFonts.poppins().fontFamily,
                               ),
                             ),
                           ],

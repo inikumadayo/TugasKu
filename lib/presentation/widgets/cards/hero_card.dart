@@ -1,10 +1,9 @@
-import 'dart:async';
 
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
+import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/schedule_model.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HeroDash extends StatefulWidget {
   const HeroDash({super.key});
@@ -15,22 +14,21 @@ class HeroDash extends StatefulWidget {
 
 class _HeroDashState extends State<HeroDash> {
   ScheduleModel? _nextSchedule;
-  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _findNextSchedule();
+    DateTimeHelper.heartbeat.addListener(_onHeartbeat);
+  }
 
-    // Update berkala agar hitung mundur dan jadwal terdekat update realtime
-    _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      if (mounted) _findNextSchedule();
-    });
+  void _onHeartbeat() {
+    if (mounted) _findNextSchedule();
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    DateTimeHelper.heartbeat.removeListener(_onHeartbeat);
     super.dispose();
   }
 
@@ -65,23 +63,7 @@ class _HeroDashState extends State<HeroDash> {
   /// Hitung estimasi waktu ke jadwal berikutnya
   String _getTimeUntil() {
     if (_nextSchedule == null) return '';
-
-    final now = DateTime.now();
-    final parts = _nextSchedule!.waktuMulai.split(':');
-    final scheduleTime = DateTime(
-      now.year,
-      now.month,
-      now.day,
-      int.parse(parts[0]),
-      int.parse(parts[1]),
-    );
-
-    final diff = scheduleTime.difference(now);
-
-    if (diff.isNegative) return 'Sedang berlangsung';
-    if (diff.inHours > 0) return 'dalam ${diff.inHours} Jam';
-    if (diff.inMinutes > 0) return 'dalam ${diff.inMinutes} Menit';
-    return 'Segera dimulai';
+    return DateTimeHelper.getTimeUntilSchedule(_nextSchedule!.waktuMulai);
   }
 
   @override
@@ -109,7 +91,6 @@ class _HeroDashState extends State<HeroDash> {
                 style: TextStyle(
                   color: ColorsTheme.latarKomponen.withValues(alpha: 0.8),
                   fontSize: 16,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
                 ),
               ),
             ],
@@ -148,7 +129,6 @@ class _HeroDashState extends State<HeroDash> {
                     color: ColorsTheme.latarKomponen,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
                   ),
                 ),
               ),
@@ -157,7 +137,6 @@ class _HeroDashState extends State<HeroDash> {
                 style: TextStyle(
                   color: ColorsTheme.latarKomponen,
                   fontSize: 14,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
                 ),
               ),
             ],
@@ -173,7 +152,6 @@ class _HeroDashState extends State<HeroDash> {
                     color: ColorsTheme.latarKomponen,
                     fontSize: 23,
                     fontWeight: FontWeight.bold,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -185,7 +163,6 @@ class _HeroDashState extends State<HeroDash> {
                   style: TextStyle(
                     color: ColorsTheme.latarKomponen,
                     fontSize: 14,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
                   ),
                 ),
               ),
@@ -209,7 +186,6 @@ class _HeroDashState extends State<HeroDash> {
                   '${_nextSchedule!.waktuMulai} - ${_nextSchedule!.waktuSelesai}',
                   style: TextStyle(
                     color: ColorsTheme.latarKomponen,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
@@ -231,7 +207,6 @@ class _HeroDashState extends State<HeroDash> {
                   'Ruang: ${_nextSchedule!.ruang}',
                   style: TextStyle(
                     color: ColorsTheme.latarKomponen,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),

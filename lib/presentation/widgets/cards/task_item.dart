@@ -1,6 +1,5 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class TaskItem extends StatelessWidget {
   final String title;
@@ -69,7 +68,6 @@ class TaskItem extends StatelessWidget {
                             color: ColorsTheme.teks,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
-                            fontFamily: GoogleFonts.poppins().fontFamily,
                             decoration: isCompleted
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
@@ -83,7 +81,6 @@ class TaskItem extends StatelessWidget {
                           style: TextStyle(
                             color: ColorsTheme.teks,
                             fontSize: 12,
-                            fontFamily: GoogleFonts.poppins().fontFamily,
                           ),
                         ),
                       ],
@@ -104,7 +101,6 @@ class TaskItem extends StatelessWidget {
                 isCompleted ? 'Selesai' : sisaWaktu,
                 style: TextStyle(
                   color: ColorsTheme.teks,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                 ),

@@ -1,7 +1,6 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/models/schedule_model.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class ScheduleItem extends StatelessWidget {
   final ScheduleModel schedule;
@@ -37,7 +36,6 @@ class ScheduleItem extends StatelessWidget {
                       color: ColorsTheme.teks,
                       fontSize: 14,
                       fontWeight: isOn ? FontWeight.bold : FontWeight.normal,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                   Text(
@@ -45,7 +43,6 @@ class ScheduleItem extends StatelessWidget {
                     style: TextStyle(
                       color: ColorsTheme.teks,
                       fontSize: 14,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                 ],
@@ -85,7 +82,6 @@ class ScheduleItem extends StatelessWidget {
                               : ColorsTheme.teks,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
@@ -98,7 +94,6 @@ class ScheduleItem extends StatelessWidget {
                               ? ColorsTheme.latarKomponen.withValues(alpha: 0.7)
                               : ColorsTheme.teksSekunder,
                           fontSize: 14,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -122,7 +117,6 @@ class ScheduleItem extends StatelessWidget {
                                   )
                                 : ColorsTheme.teks,
                             fontSize: 11,
-                            fontFamily: GoogleFonts.poppins().fontFamily,
                           ),
                         ),
                       ),

@@ -1,13 +1,12 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class FilterDate extends StatefulWidget {
   final String day;
   final String date;
   final bool isSelected;
 
-  const new({
+  const FilterDate({
     super.key,
     required this.day,
     required this.date,
@@ -43,7 +42,6 @@ class _FilterDateState extends State<FilterDate> {
               fontWeight: widget.isSelected
                   ? FontWeight.bold
                   : FontWeight.normal,
-              fontFamily: GoogleFonts.poppins().fontFamily,
             ),
           ),
           SizedBox(height: 5),
@@ -55,7 +53,6 @@ class _FilterDateState extends State<FilterDate> {
                   : ColorsTheme.teks,
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              fontFamily: GoogleFonts.poppins().fontFamily,
             ),
           ),
         ],

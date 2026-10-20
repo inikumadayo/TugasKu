@@ -1,8 +1,7 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/task_model.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Bottom sheet untuk menambah tugas baru.
 ///
@@ -124,7 +123,6 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
                 Text(
                   'Tambah tugas',
                   style: TextStyle(
-                    fontFamily: GoogleFonts.poppins().fontFamily,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: ColorsTheme.teks,
@@ -174,7 +172,6 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
                           child: Text(
                             'Batal',
                             style: TextStyle(
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                               fontWeight: FontWeight.w600,
                               color: ColorsTheme.teks,
                             ),
@@ -200,7 +197,6 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
                           child: Text(
                             'Simpan tugas',
                             style: TextStyle(
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -222,7 +218,6 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
     return Text(
       text,
       style: TextStyle(
-        fontFamily: GoogleFonts.poppins().fontFamily,
         fontSize: 13,
         fontWeight: FontWeight.w500,
         color: ColorsTheme.teksSekunder,
@@ -239,7 +234,6 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
       controller: controller,
       maxLines: maxLines,
       style: TextStyle(
-        fontFamily: GoogleFonts.poppins().fontFamily,
         fontSize: 15,
         color: ColorsTheme.teks,
       ),
@@ -300,7 +294,6 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
                     ? _formatDeadline(_selectedDeadline!)
                     : 'Pilih tanggal & waktu',
                 style: TextStyle(
-                  fontFamily: GoogleFonts.poppins().fontFamily,
                   fontSize: 15,
                   color: _selectedDeadline != null
                       ? ColorsTheme.teks

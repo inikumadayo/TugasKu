@@ -1,7 +1,6 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Menampilkan bottom sheet pemilih tema (Blueberry Oat / Midnight Navy)
 Future<void> showThemePickerSheet(
@@ -35,7 +34,6 @@ Future<void> showThemePickerSheet(
               Text(
                 'Pilih Tema',
                 style: TextStyle(
-                  fontFamily: GoogleFonts.poppins().fontFamily,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: ColorsTheme.teks,
@@ -144,7 +142,6 @@ Widget _buildThemeOption({
                     Text(
                       name,
                       style: TextStyle(
-                        fontFamily: GoogleFonts.poppins().fontFamily,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: ColorsTheme.teks,
@@ -153,7 +150,6 @@ Widget _buildThemeOption({
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontFamily: GoogleFonts.poppins().fontFamily,
                         fontSize: 11,
                         color: ColorsTheme.teksSekunder,
                       ),

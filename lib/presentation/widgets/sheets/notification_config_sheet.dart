@@ -1,4 +1,4 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/services/notification_service.dart';
 import 'package:file_picker/file_picker.dart';
@@ -165,7 +165,6 @@ Future<void> showNotificationConfigSheet(
                                   ? 'Pengaturan Notifikasi Kuliah'
                                   : 'Pengaturan Pengingat Tugas',
                               style: TextStyle(
-                                fontFamily: GoogleFonts.poppins().fontFamily,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: ColorsTheme.teks,
@@ -177,7 +176,6 @@ Future<void> showNotificationConfigSheet(
                                   ? 'Kapan & nada pengingat jadwal kuliah'
                                   : 'Kapan & nada pengingat batas deadline',
                               style: TextStyle(
-                                fontFamily: GoogleFonts.poppins().fontFamily,
                                 fontSize: 12,
                                 color: ColorsTheme.teksSekunder,
                               ),
@@ -213,7 +211,6 @@ Future<void> showNotificationConfigSheet(
                             Text(
                               'Kapan Notifikasi Dikirim',
                               style: TextStyle(
-                                fontFamily: GoogleFonts.poppins().fontFamily,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: ColorsTheme.teks,
@@ -338,7 +335,6 @@ Future<void> showNotificationConfigSheet(
                             Text(
                               'Lagu & Nada Dering Notifikasi',
                               style: TextStyle(
-                                fontFamily: GoogleFonts.poppins().fontFamily,
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
                                 color: ColorsTheme.teks,
@@ -464,8 +460,6 @@ Future<void> showNotificationConfigSheet(
                                         ? 'Upload Lagu / Audio Pribadi'
                                         : 'Ganti Lagu / Audio Pribadi',
                                     style: TextStyle(
-                                      fontFamily:
-                                          GoogleFonts.poppins().fontFamily,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -539,7 +533,6 @@ Future<void> showNotificationConfigSheet(
                             child: Text(
                               'Simpan Pengaturan',
                               style: TextStyle(
-                                fontFamily: GoogleFonts.poppins().fontFamily,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                               ),

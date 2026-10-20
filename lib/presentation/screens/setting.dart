@@ -1,19 +1,16 @@
 import 'dart:convert';
 
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/services/notification_service.dart';
-import 'package:adistyclone/utils/about_sheet.dart';
-import 'package:adistyclone/utils/edit_profile_dialog.dart';
-import 'package:adistyclone/utils/notification_config_sheet.dart';
-import 'package:adistyclone/utils/theme_picker_sheet.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/edit_profile_dialog.dart';
+import 'package:adistyclone/presentation/widgets/sheets/about_sheet.dart';
+import 'package:adistyclone/presentation/widgets/sheets/notification_config_sheet.dart';
+import 'package:adistyclone/presentation/widgets/sheets/theme_picker_sheet.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Setting extends StatefulWidget {
-  final VoidCallback? onThemeChanged;
-
-  const Setting({super.key, this.onThemeChanged});
+  const Setting({super.key});
 
   @override
   State<Setting> createState() => _SettingState();
@@ -55,7 +52,6 @@ class _SettingState extends State<Setting> {
                       color: ColorsTheme.teks,
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -64,7 +60,6 @@ class _SettingState extends State<Setting> {
                     style: TextStyle(
                       color: ColorsTheme.teksSekunder,
                       fontSize: 14,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                 ],
@@ -212,7 +207,6 @@ class _SettingState extends State<Setting> {
                       color: ColorsTheme.teks,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -222,7 +216,6 @@ class _SettingState extends State<Setting> {
                     style: TextStyle(
                       color: ColorsTheme.teksSekunder,
                       fontSize: 14,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -251,7 +244,6 @@ class _SettingState extends State<Setting> {
                           color: ColorsTheme.teks,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                     ),
@@ -331,7 +323,6 @@ class _SettingState extends State<Setting> {
               color: textColor,
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              fontFamily: GoogleFonts.poppins().fontFamily,
             ),
           ),
           const SizedBox(height: 4),
@@ -341,7 +332,6 @@ class _SettingState extends State<Setting> {
             style: TextStyle(
               color: ColorsTheme.teksSekunder,
               fontSize: 11,
-              fontFamily: GoogleFonts.poppins().fontFamily,
             ),
           ),
         ],
@@ -381,7 +371,6 @@ class _SettingState extends State<Setting> {
                   style: TextStyle(
                     color: ColorsTheme.teksSekunder,
                     fontSize: 13,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
                   ),
                 ),
                 const SizedBox(width: 4),
@@ -393,15 +382,7 @@ class _SettingState extends State<Setting> {
               ],
             ),
             onTap: () {
-              showThemePickerSheet(
-                context,
-                onThemeChanged: () {
-                  if (mounted) {
-                    setState(() {});
-                    widget.onThemeChanged?.call();
-                  }
-                },
-              );
+              showThemePickerSheet(context);
             },
           ),
           _buildDivider(),
@@ -509,7 +490,6 @@ class _SettingState extends State<Setting> {
                       color: ColorsTheme.teks,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                   if (subtitle != null) ...[
@@ -521,7 +501,6 @@ class _SettingState extends State<Setting> {
                       style: TextStyle(
                         color: ColorsTheme.teksSekunder,
                         fontSize: 11,
-                        fontFamily: GoogleFonts.poppins().fontFamily,
                       ),
                     ),
                   ],

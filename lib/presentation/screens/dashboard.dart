@@ -1,11 +1,9 @@
-import 'dart:convert';
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/utils/image_helper.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
-import 'package:adistyclone/models/task_model.dart';
-import 'package:adistyclone/utils/edit_profile_dialog.dart';
-import 'package:adistyclone/utils/hero.dart';
-import 'package:adistyclone/utils/task_item.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:adistyclone/presentation/widgets/cards/hero_card.dart';
+import 'package:adistyclone/presentation/widgets/cards/task_item.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/edit_profile_dialog.dart';
 import 'package:flutter/material.dart';
 
 class Dashboard extends StatefulWidget {
@@ -16,8 +14,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  List<TaskModel> _tasks = [];
-
   @override
   void initState() {
     super.initState();
@@ -30,9 +26,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void _loadTasks() {
-    setState(() {
-      _tasks = DatabaseHelper.getIncompleteTasks();
-    });
+    setState(() {});
   }
 
   void checkBoxChanged(bool? value, String taskId) async {
@@ -44,6 +38,7 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     final totalTasks = DatabaseHelper.totalTaskCount();
     final profile = DatabaseHelper.getUserProfile();
+    final incompleteTasks = DatabaseHelper.getIncompleteTasks();
 
     return Scaffold(
       backgroundColor: ColorsTheme.latar,
@@ -70,20 +65,28 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: profile.profileImageBase64 != null
-                            ? Image.memory(
-                                base64Decode(profile.profileImageBase64!),
+                        child: Builder(
+                          builder: (context) {
+                            final imageBytes = ImageHelper.bytesFromBase64(
+                              profile.profileImageBase64,
+                            );
+                            if (imageBytes != null) {
+                              return Image.memory(
+                                imageBytes,
                                 width: 60,
                                 height: 60,
                                 fit: BoxFit.cover,
-                              )
-                            : Center(
-                                child: Icon(
-                                  Icons.person_outline_rounded,
-                                  color: ColorsTheme.kartuUtama,
-                                  size: 35,
-                                ),
+                              );
+                            }
+                            return Center(
+                              child: Icon(
+                                Icons.person_outline_rounded,
+                                color: ColorsTheme.kartuUtama,
+                                size: 35,
                               ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                     const SizedBox(width: 20),
@@ -97,7 +100,6 @@ class _DashboardState extends State<Dashboard> {
                               color: ColorsTheme.teks,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -107,7 +109,6 @@ class _DashboardState extends State<Dashboard> {
                             style: TextStyle(
                               color: ColorsTheme.teksSekunder,
                               fontSize: 14,
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                             ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
@@ -130,7 +131,6 @@ class _DashboardState extends State<Dashboard> {
                       color: ColorsTheme.teks,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                   Text(
@@ -138,14 +138,13 @@ class _DashboardState extends State<Dashboard> {
                     style: TextStyle(
                       color: ColorsTheme.kartuUtama,
                       fontSize: 14,
-                      fontFamily: GoogleFonts.poppins().fontFamily,
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 10),
               Expanded(
-                child: _tasks.isEmpty
+                child: incompleteTasks.isEmpty
                     ? Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -161,16 +160,15 @@ class _DashboardState extends State<Dashboard> {
                               style: TextStyle(
                                 color: ColorsTheme.teksSekunder,
                                 fontSize: 14,
-                                fontFamily: GoogleFonts.poppins().fontFamily,
                               ),
                             ),
                           ],
                         ),
                       )
                     : ListView.builder(
-                        itemCount: _tasks.length,
+                        itemCount: incompleteTasks.length,
                         itemBuilder: (context, index) {
-                          final task = _tasks[index];
+                          final task = incompleteTasks[index];
                           return TaskItem(
                             title: task.title,
                             tugasapa: task.description,

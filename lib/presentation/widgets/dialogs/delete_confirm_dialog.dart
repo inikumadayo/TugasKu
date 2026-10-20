@@ -1,6 +1,5 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Dialog utilitas untuk konfirmasi penghapusan (Jadwal, Tugas, dsb).
 ///
@@ -20,7 +19,6 @@ Future<bool> showDeleteConfirmDialog(
       title: Text(
         title,
         style: TextStyle(
-          fontFamily: GoogleFonts.poppins().fontFamily,
           fontWeight: FontWeight.bold,
           color: ColorsTheme.teks,
         ),
@@ -28,7 +26,6 @@ Future<bool> showDeleteConfirmDialog(
       content: Text(
         message ?? 'Apakah kamu yakin ingin menghapus "$itemName"?',
         style: TextStyle(
-          fontFamily: GoogleFonts.poppins().fontFamily,
           color: ColorsTheme.teks,
         ),
       ),

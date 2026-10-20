@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/user_profile_model.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 /// Menampilkan dialog untuk mengedit profil atau inisialisasi awal.
@@ -206,7 +205,6 @@ Future<bool> showEditProfileDialog(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: ColorsTheme.teks,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -238,7 +236,6 @@ Future<bool> showEditProfileDialog(
                         style: TextStyle(
                           fontSize: 11,
                           color: ColorsTheme.teksSekunder,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                       const SizedBox(height: 16),

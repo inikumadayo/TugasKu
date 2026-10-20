@@ -1,11 +1,13 @@
+import 'package:adistyclone/core/utils/date_time_helper.dart';
+
 /// Model class untuk data Tugas/Task
 class TaskModel {
-  String id;
-  String title;
-  String description;
-  bool isCompleted;
-  DateTime? deadline;
-  DateTime createdAt;
+  final String id;
+  final String title;
+  final String description;
+  final bool isCompleted;
+  final DateTime? deadline;
+  final DateTime createdAt;
 
   TaskModel({
     required this.id,
@@ -15,6 +17,24 @@ class TaskModel {
     this.deadline,
     DateTime? createdAt,
   }) : createdAt = createdAt ?? DateTime.now();
+
+  TaskModel copyWith({
+    String? id,
+    String? title,
+    String? description,
+    bool? isCompleted,
+    DateTime? deadline,
+    DateTime? createdAt,
+  }) {
+    return TaskModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      isCompleted: isCompleted ?? this.isCompleted,
+      deadline: deadline ?? this.deadline,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 
   /// Convert ke Map untuk penyimpanan Hive
   Map<String, dynamic> toMap() {
@@ -45,16 +65,5 @@ class TaskModel {
   }
 
   /// Sisa waktu deadline sebagai string yang readable
-  String get sisaWaktu {
-    if (deadline == null) return 'Tanpa Deadline';
-
-    final now = DateTime.now();
-    final diff = deadline!.difference(now);
-
-    if (diff.isNegative) return 'Terlambat';
-    if (diff.inDays > 0) return '${diff.inDays} Hari';
-    if (diff.inHours > 0) return '${diff.inHours} Jam';
-    if (diff.inMinutes > 0) return '${diff.inMinutes} Menit';
-    return 'Segera';
-  }
+  String get sisaWaktu => DateTimeHelper.getRemainingTime(deadline);
 }

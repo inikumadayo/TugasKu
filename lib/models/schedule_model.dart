@@ -1,14 +1,16 @@
+import 'package:adistyclone/core/utils/date_time_helper.dart';
+
 /// Model class untuk data Jadwal/Schedule
 class ScheduleModel {
-  String id;
-  String title;
-  String ruang;
-  String waktuMulai; // format "HH:mm"
-  String waktuSelesai; // format "HH:mm"
-  String jenis;
-  int hari; // 1=Senin, 2=Selasa, ..., 7=Minggu
+  final String id;
+  final String title;
+  final String ruang;
+  final String waktuMulai; // format "HH:mm"
+  final String waktuSelesai; // format "HH:mm"
+  final String jenis;
+  final int hari; // 1=Senin, 2=Selasa, ..., 7=Minggu
 
-  ScheduleModel({
+  const ScheduleModel({
     required this.id,
     required this.title,
     required this.ruang,
@@ -17,6 +19,26 @@ class ScheduleModel {
     required this.jenis,
     required this.hari,
   });
+
+  ScheduleModel copyWith({
+    String? id,
+    String? title,
+    String? ruang,
+    String? waktuMulai,
+    String? waktuSelesai,
+    String? jenis,
+    int? hari,
+  }) {
+    return ScheduleModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      ruang: ruang ?? this.ruang,
+      waktuMulai: waktuMulai ?? this.waktuMulai,
+      waktuSelesai: waktuSelesai ?? this.waktuSelesai,
+      jenis: jenis ?? this.jenis,
+      hari: hari ?? this.hari,
+    );
+  }
 
   /// Convert ke Map untuk penyimpanan Hive
   Map<String, dynamic> toMap() {
@@ -45,23 +67,13 @@ class ScheduleModel {
   }
 
   /// Nama hari berdasarkan angka
-  String get namaHari {
-    const days = [
-      '',
-      'Senin',
-      'Selasa',
-      'Rabu',
-      'Kamis',
-      'Jumat',
-      'Sabtu',
-      'Minggu',
-    ];
-    return days[hari];
-  }
+  String get namaHari => DateTimeHelper.getNamaHari(hari);
 
   /// Singkatan hari
   String get singkatanHari {
-    const days = ['', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
-    return days[hari];
+    if (hari >= 1 && hari <= 6) {
+      return DateTimeHelper.singkatanHari[hari - 1];
+    }
+    return hari == 7 ? 'Min' : '';
   }
 }

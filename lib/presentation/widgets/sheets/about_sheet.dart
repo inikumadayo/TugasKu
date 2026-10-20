@@ -1,6 +1,5 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Menampilkan bottom sheet tentang aplikasi (informasi versi, deskripsi, quote, credit & link trakteer)
@@ -64,7 +63,6 @@ Future<void> showAboutSheet(BuildContext context) async {
                       Text(
                         'TugasKu',
                         style: TextStyle(
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: ColorsTheme.teks,
@@ -74,7 +72,6 @@ Future<void> showAboutSheet(BuildContext context) async {
                       Text(
                         'Versi 1.1.0',
                         style: TextStyle(
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: ColorsTheme.teksSekunder,
@@ -87,7 +84,6 @@ Future<void> showAboutSheet(BuildContext context) async {
                         'Aplikasi manajemen jadwal kuliah dan tugas untuk mahasiswa yang produktif.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                           fontSize: 13,
                           color: ColorsTheme.teksSekunder,
                           height: 1.5,
@@ -129,7 +125,6 @@ Future<void> showAboutSheet(BuildContext context) async {
                               '"Lost in quiet places,\ndreaming of worlds with magic."',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: GoogleFonts.poppins().fontFamily,
                                 fontSize: 13,
                                 fontStyle: FontStyle.italic,
                                 fontWeight: FontWeight.w500,
@@ -153,7 +148,6 @@ Future<void> showAboutSheet(BuildContext context) async {
                           Text(
                             'Crafted by ',
                             style: TextStyle(
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                               fontSize: 12,
                               color: ColorsTheme.teksSekunder,
                             ),
@@ -161,7 +155,6 @@ Future<void> showAboutSheet(BuildContext context) async {
                           Text(
                             'Kumadayo',
                             style: TextStyle(
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: ColorsTheme.teks,
@@ -195,7 +188,6 @@ Future<void> showAboutSheet(BuildContext context) async {
                           label: Text(
                             'Dukung di Trakteer ☕',
                             style: TextStyle(
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
@@ -230,7 +222,6 @@ Future<void> showAboutSheet(BuildContext context) async {
                           child: Text(
                             'Tutup',
                             style: TextStyle(
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
                             ),

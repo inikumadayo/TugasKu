@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 class ColorsTheme {
   static bool _isDarkMode = false;
+  static final ValueNotifier<bool> isDarkModeNotifier = ValueNotifier<bool>(false);
 
   static bool get isDarkMode => _isDarkMode;
 
   static void setDarkMode(bool value) {
     _isDarkMode = value;
+    isDarkModeNotifier.value = value;
   }
 
   static Color get latar => _isDarkMode ? ColorDark.latar : ColorLight.latar;

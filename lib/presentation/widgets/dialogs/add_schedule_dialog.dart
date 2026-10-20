@@ -1,8 +1,8 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
+import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/schedule_model.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Bottom sheet untuk menambah jadwal baru.
 ///
@@ -38,15 +38,6 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
   String _selectedJenis = 'Mata Kuliah';
   late int _selectedHari;
 
-  static const List<String> _dayLabels = [
-    'Sen',
-    'Sel',
-    'Rab',
-    'Kam',
-    'Jum',
-    'Sab',
-  ];
-
   static const List<String> _jenisOptions = [
     'Mata Kuliah',
     'Praktikum',
@@ -78,12 +69,11 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
     required TextEditingController controller,
     required TimeOfDay defaultTime,
   }) async {
-    final initial = _parseTime(controller.text, defaultTime);
+    final initial = DateTimeHelper.parseTime(controller.text, fallback: defaultTime);
     final picked = await showTimePicker(context: context, initialTime: initial);
     if (picked != null) {
       setState(() {
-        controller.text =
-            '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
+        controller.text = DateTimeHelper.formatTimeOfDay(picked);
       });
     }
   }
@@ -145,7 +135,6 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                 Text(
                   'Tambah jadwal',
                   style: TextStyle(
-                    fontFamily: GoogleFonts.poppins().fontFamily,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: ColorsTheme.teks,
@@ -236,7 +225,6 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                           child: Text(
                             'Batal',
                             style: TextStyle(
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                               fontWeight: FontWeight.w600,
                               color: ColorsTheme.teks,
                             ),
@@ -262,7 +250,6 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                           child: Text(
                             'Simpan jadwal',
                             style: TextStyle(
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -284,7 +271,6 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
     return Text(
       text,
       style: TextStyle(
-        fontFamily: GoogleFonts.poppins().fontFamily,
         fontSize: 13,
         fontWeight: FontWeight.w500,
         color: ColorsTheme.teksSekunder,
@@ -299,7 +285,6 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
     return TextField(
       controller: controller,
       style: TextStyle(
-        fontFamily: GoogleFonts.poppins().fontFamily,
         fontSize: 15,
         color: ColorsTheme.teks,
       ),
@@ -335,7 +320,7 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
-      children: List.generate(_dayLabels.length, (index) {
+      children: List.generate(DateTimeHelper.singkatanHari.length, (index) {
         final dayValue = index + 1; // 1 = Senin, 2 = Selasa, ...
         final isSelected = _selectedHari == dayValue;
 
@@ -354,9 +339,8 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                   : Border.all(color: Colors.grey.shade300),
             ),
             child: Text(
-              _dayLabels[index],
+              DateTimeHelper.singkatanHari[index],
               style: TextStyle(
-                fontFamily: GoogleFonts.poppins().fontFamily,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: isSelected ? Colors.white : ColorsTheme.teks,
@@ -390,7 +374,6 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
             child: Text(
               jenis,
               style: TextStyle(
-                fontFamily: GoogleFonts.poppins().fontFamily,
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: isSelected ? Colors.white : ColorsTheme.teks,
@@ -413,7 +396,6 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
         child: TextField(
           controller: controller,
           style: TextStyle(
-            fontFamily: GoogleFonts.poppins().fontFamily,
             fontSize: 15,
             color: ColorsTheme.teks,
           ),
@@ -443,17 +425,4 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
       ),
     );
   }
-}
-
-TimeOfDay _parseTime(String text, TimeOfDay fallback) {
-  if (text.isEmpty) return fallback;
-  final parts = text.split(':');
-  if (parts.length == 2) {
-    final h = int.tryParse(parts[0]);
-    final m = int.tryParse(parts[1]);
-    if (h != null && m != null) {
-      return TimeOfDay(hour: h, minute: m);
-    }
-  }
-  return fallback;
 }

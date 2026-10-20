@@ -1,12 +1,12 @@
 /// Model class untuk data profil pengguna
 class UserProfileModel {
-  String name;
-  String description;
-  String? profileImageBase64;
-  String? bannerImageBase64;
-  bool isInitialized;
+  final String name;
+  final String description;
+  final String? profileImageBase64;
+  final String? bannerImageBase64;
+  final bool isInitialized;
 
-  UserProfileModel({
+  const UserProfileModel({
     required this.name,
     required this.description,
     this.profileImageBase64,

@@ -1,10 +1,11 @@
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
+import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
-import 'package:adistyclone/pages/dashboard.dart';
-import 'package:adistyclone/pages/schedule.dart';
-import 'package:adistyclone/pages/setting.dart';
-import 'package:adistyclone/pages/task.dart';
-import 'package:adistyclone/utils/edit_profile_dialog.dart';
+import 'package:adistyclone/presentation/screens/dashboard.dart';
+import 'package:adistyclone/presentation/screens/schedule.dart';
+import 'package:adistyclone/presentation/screens/setting.dart';
+import 'package:adistyclone/presentation/screens/task.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/edit_profile_dialog.dart';
 import 'package:flutter/material.dart';
 
 class Homepage extends StatefulWidget {
@@ -20,10 +21,17 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
+    DateTimeHelper.startHeartbeat();
     // Tampilkan dialog profil jika pengguna baru pertama kali membuka aplikasi
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkFirstTimeProfile();
     });
+  }
+
+  @override
+  void dispose() {
+    DateTimeHelper.stopHeartbeat();
+    super.dispose();
   }
 
   void _checkFirstTimeProfile() async {
@@ -35,33 +43,18 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
-  /// Callback yang dipanggil saat tema berubah (dari halaman Setting)
-  void _onThemeChanged() {
-    setState(() {});
-  }
-
-  // Menggunakan getter agar widget di-rebuild saat berpindah tab
-  // sehingga data terbaru dari database selalu ditampilkan
-  Widget _getPage(int index) {
-    switch (index) {
-      case 0:
-        return Dashboard();
-      case 1:
-        return Schedule();
-      case 2:
-        return Task();
-      case 3:
-        return Setting(onThemeChanged: _onThemeChanged);
-      default:
-        return Dashboard();
-    }
-  }
+  final List<Widget> _pages = const [
+    Dashboard(),
+    Schedule(),
+    Task(),
+    Setting(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsTheme.latar,
-      body: _getPage(_selectedIndex),
+      body: IndexedStack(index: _selectedIndex, children: _pages),
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: const EdgeInsets.only(top: 20),

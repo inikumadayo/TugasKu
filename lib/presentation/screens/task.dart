@@ -1,13 +1,12 @@
-import 'dart:async';
-import 'package:adistyclone/assets/colors.dart';
+import 'package:adistyclone/core/theme/colors.dart';
+import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/task_model.dart';
-import 'package:adistyclone/utils/add_task_dialog.dart';
-import 'package:adistyclone/utils/delete_confirm_dialog.dart';
-import 'package:adistyclone/utils/filter.dart';
-import 'package:adistyclone/utils/task_item.dart';
+import 'package:adistyclone/presentation/widgets/cards/task_item.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/add_task_dialog.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/delete_confirm_dialog.dart';
+import 'package:adistyclone/presentation/widgets/filters/filter.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Task extends StatefulWidget {
   const Task({super.key});
@@ -26,25 +25,23 @@ class _TaskState extends State<Task> {
     ['Selesai', false],
   ];
 
-  Timer? _timer;
-
   @override
   void initState() {
     super.initState();
     _initTasks();
+    DateTimeHelper.heartbeat.addListener(_onHeartbeat);
+  }
 
-    // Cek berkala agar task yang lewat deadline saat akhir minggu langsung terhapus
-    _timer = Timer.periodic(const Duration(seconds: 30), (timer) {
-      if (mounted) {
-        DatabaseHelper.deleteExpiredWeeklyTasks().then((deleted) {
-          if (deleted > 0 && mounted) {
-            _loadTasks();
-          } else if (mounted) {
-            setState(() {});
-          }
-        });
-      }
-    });
+  void _onHeartbeat() {
+    if (mounted) {
+      DatabaseHelper.deleteExpiredWeeklyTasks().then((deleted) {
+        if (deleted > 0 && mounted) {
+          _loadTasks();
+        } else if (mounted) {
+          setState(() {});
+        }
+      });
+    }
   }
 
   void _initTasks() async {
@@ -54,7 +51,7 @@ class _TaskState extends State<Task> {
 
   @override
   void dispose() {
-    _timer?.cancel();
+    DateTimeHelper.heartbeat.removeListener(_onHeartbeat);
     super.dispose();
   }
 
@@ -124,7 +121,6 @@ class _TaskState extends State<Task> {
                           color: ColorsTheme.teks,
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                       SizedBox(height: 1),
@@ -133,7 +129,6 @@ class _TaskState extends State<Task> {
                         style: TextStyle(
                           color: ColorsTheme.teks,
                           fontSize: 14,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                     ],
@@ -198,7 +193,6 @@ class _TaskState extends State<Task> {
                           color: ColorsTheme.teks,
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                       Text(
@@ -206,7 +200,6 @@ class _TaskState extends State<Task> {
                         style: TextStyle(
                           color: ColorsTheme.teks,
                           fontSize: 14,
-                          fontFamily: GoogleFonts.poppins().fontFamily,
                         ),
                       ),
                     ],
@@ -248,7 +241,6 @@ class _TaskState extends State<Task> {
                             style: TextStyle(
                               color: ColorsTheme.teksSekunder,
                               fontSize: 14,
-                              fontFamily: GoogleFonts.poppins().fontFamily,
                             ),
                           ),
                         ],

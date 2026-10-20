@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 /// Helper kelas untuk pemrosesan, formatting, dan kalkulasi tanggal & waktu.
@@ -6,7 +7,9 @@ class DateTimeHelper {
   static Timer? _heartbeatTimer;
 
   /// Heartbeat ticker tunggal untuk seluruh aplikasi (update setiap 30 detik)
-  static final ValueNotifier<DateTime> heartbeat = ValueNotifier<DateTime>(DateTime.now());
+  static final ValueNotifier<DateTime> heartbeat = ValueNotifier<DateTime>(
+    DateTime.now(),
+  );
 
   /// Mulai timer heartbeat terpusat
   static void startHeartbeat() {
@@ -21,6 +24,7 @@ class DateTimeHelper {
     _heartbeatTimer?.cancel();
     _heartbeatTimer = null;
   }
+
   /// Nama hari lengkap (1 = Senin, ..., 7 = Minggu, indeks 0 dummy)
   static const List<String> namaHari = [
     '',
@@ -97,7 +101,10 @@ class DateTimeHelper {
   }
 
   /// Parsing string waktu "HH:mm" menjadi [TimeOfDay]
-  static TimeOfDay parseTime(String text, {TimeOfDay fallback = const TimeOfDay(hour: 0, minute: 0)}) {
+  static TimeOfDay parseTime(
+    String text, {
+    TimeOfDay fallback = const TimeOfDay(hour: 0, minute: 0),
+  }) {
     if (text.isEmpty) return fallback;
     final parts = text.split(':');
     if (parts.length == 2) {
@@ -111,7 +118,10 @@ class DateTimeHelper {
   }
 
   /// Hitung sisa waktu hingga deadline task (contoh: "3 Hari", "2 Jam", "Terlambat")
-  static String getRemainingTime(DateTime? deadline, {String fallback = 'Tanpa Deadline'}) {
+  static String getRemainingTime(
+    DateTime? deadline, {
+    String fallback = 'Tanpa Deadline',
+  }) {
     if (deadline == null) return fallback;
 
     final now = DateTime.now();

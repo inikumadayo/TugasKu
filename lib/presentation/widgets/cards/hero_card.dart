@@ -4,6 +4,7 @@ import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/schedule_model.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HeroDash extends StatefulWidget {
   const HeroDash({super.key});
@@ -14,6 +15,7 @@ class HeroDash extends StatefulWidget {
 
 class _HeroDashState extends State<HeroDash> {
   ScheduleModel? _nextSchedule;
+  bool _hasSchedulesToday = false;
 
   @override
   void initState() {
@@ -38,14 +40,17 @@ class _HeroDashState extends State<HeroDash> {
     final todaySchedules = DatabaseHelper.getSchedulesByDay(now.weekday);
 
     if (todaySchedules.isEmpty) {
-      setState(() => _nextSchedule = null);
+      setState(() {
+        _hasSchedulesToday = false;
+        _nextSchedule = null;
+      });
       return;
     }
 
     final currentTime =
         '${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
 
-    // Cari jadwal yang belum lewat
+    // Cari jadwal yang belum selesai (waktu selesai masih di masa depan)
     ScheduleModel? next;
     for (final schedule in todaySchedules) {
       if (schedule.waktuSelesai.compareTo(currentTime) > 0) {
@@ -55,8 +60,8 @@ class _HeroDashState extends State<HeroDash> {
     }
 
     setState(() {
-      _nextSchedule =
-          next ?? (todaySchedules.isNotEmpty ? todaySchedules.first : null);
+      _hasSchedulesToday = true;
+      _nextSchedule = next;
     });
   }
 
@@ -81,18 +86,35 @@ class _HeroDashState extends State<HeroDash> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
-                Icons.event_available_rounded,
+                _hasSchedulesToday
+                    ? Icons.task_alt_rounded
+                    : Icons.event_available_rounded,
                 color: ColorsTheme.latarKomponen.withValues(alpha: 0.7),
                 size: 48,
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Text(
-                'Tidak ada jadwal hari ini',
+                _hasSchedulesToday
+                    ? 'Tidak ada jadwal lagi hari ini'
+                    : 'Tidak ada jadwal hari ini',
                 style: TextStyle(
                   color: ColorsTheme.latarKomponen.withValues(alpha: 0.8),
                   fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: GoogleFonts.poppins().fontFamily,
                 ),
               ),
+              if (_hasSchedulesToday) ...[
+                const SizedBox(height: 4),
+                Text(
+                  'Semua jadwal kuliah sudah selesai',
+                  style: TextStyle(
+                    color: ColorsTheme.latarKomponen.withValues(alpha: 0.6),
+                    fontSize: 12,
+                    fontFamily: GoogleFonts.poppins().fontFamily,
+                  ),
+                ),
+              ],
             ],
           ),
         ),

@@ -1,10 +1,8 @@
-
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/schedule_model.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HeroDash extends StatefulWidget {
   const HeroDash({super.key});
@@ -101,7 +99,6 @@ class _HeroDashState extends State<HeroDash> {
                   color: ColorsTheme.latarKomponen.withValues(alpha: 0.8),
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  fontFamily: GoogleFonts.poppins().fontFamily,
                 ),
               ),
               if (_hasSchedulesToday) ...[
@@ -111,7 +108,6 @@ class _HeroDashState extends State<HeroDash> {
                   style: TextStyle(
                     color: ColorsTheme.latarKomponen.withValues(alpha: 0.6),
                     fontSize: 12,
-                    fontFamily: GoogleFonts.poppins().fontFamily,
                   ),
                 ),
               ],

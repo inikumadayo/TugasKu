@@ -295,7 +295,9 @@ class _SettingState extends State<Setting> {
               value: completed.toString(),
               label: 'Tugas selesai',
               color: ColorsTheme.selesai.withValues(alpha: 0.5),
-              textColor: const Color(0xFF4A7C59),
+              textColor: ColorsTheme.isDarkMode
+                  ? ColorsTheme.teksSelesai
+                  : ColorsTheme.kartuUtama,
             ),
           ),
         ),
@@ -382,7 +384,12 @@ class _SettingState extends State<Setting> {
               ],
             ),
             onTap: () {
-              showThemePickerSheet(context);
+              showThemePickerSheet(
+                context,
+                onThemeChanged: () {
+                  if (mounted) setState(() {});
+                },
+              );
             },
           ),
           _buildDivider(),
@@ -414,8 +421,10 @@ class _SettingState extends State<Setting> {
           // Notifikasi kuliah
           _buildSettingTile(
             icon: Icons.school_outlined,
-            iconBgColor: ColorsTheme.chipMentega.withValues(alpha: 0.3),
-            iconColor: ColorsTheme.chipMentega,
+            iconBgColor: ColorsTheme.chipLempung.withValues(alpha: 0.3),
+            iconColor: ColorsTheme.isDarkMode
+                ? ColorsTheme.teksChipLempung
+                : ColorsTheme.chipLempung,
             title: 'Notifikasi kuliah',
             subtitle: _getClassNotificationSubtitle(),
             trailing: Switch(
@@ -439,7 +448,9 @@ class _SettingState extends State<Setting> {
           _buildSettingTile(
             icon: Icons.info_outline_rounded,
             iconBgColor: ColorsTheme.selesai.withValues(alpha: 0.4),
-            iconColor: const Color(0xFF4A7C59),
+            iconColor: ColorsTheme.isDarkMode
+                ? ColorsTheme.teksSelesai
+                : ColorsTheme.kartuUtama,
             title: 'Tentang aplikasi',
             trailing: Icon(
               Icons.chevron_right_rounded,

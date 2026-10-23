@@ -19,89 +19,129 @@ class TaskItem extends StatelessWidget {
     this.onDelete,
   });
 
+  /// Menentukan apakah deadline tergolong mendesak (Besok, Hari ini, jam, menit)
+  bool _isUrgentDeadline(String text) {
+    final lower = text.toLowerCase();
+    if (lower.contains('besok') ||
+        lower.contains('hari ini') ||
+        lower.contains('jam') ||
+        lower.contains('menit') ||
+        lower.contains('1 hari')) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Tentukan warna chip deadline
+    final Color chipBg;
+    final Color chipTextColor;
+    final String chipLabel;
+
+    if (isCompleted) {
+      chipBg = ColorsTheme.selesai;
+      chipTextColor = ColorsTheme.teksSelesai;
+      chipLabel = 'Selesai';
+    } else if (_isUrgentDeadline(sisaWaktu)) {
+      chipBg = ColorsTheme.chipLempung;
+      chipTextColor = ColorsTheme.teksChipLempung;
+      chipLabel = sisaWaktu.isNotEmpty ? sisaWaktu : 'Besok';
+    } else {
+      chipBg = ColorsTheme.chipBatu;
+      chipTextColor = ColorsTheme.teksChipBatu;
+      chipLabel = sisaWaktu.isNotEmpty ? sisaWaktu : 'Mendatang';
+    }
+
     return GestureDetector(
       onLongPress: onDelete,
       child: Container(
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 12),
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
           color: ColorsTheme.latarKomponen,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(22),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Transform.scale(
-                    scale: 1.5,
-                    child: Checkbox(
-                      value: isCompleted,
-                      onChanged: onChanged,
-                      activeColor: ColorsTheme.selesai,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      side: WidgetStateBorderSide.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return BorderSide(
-                              color: ColorsTheme.selesai, width: 2);
-                        }
-                        return BorderSide(color: ColorsTheme.aksen, width: 2);
-                      }),
-                      visualDensity: VisualDensity.compact,
-                    ),
+            // Custom Circle Checkbox
+            GestureDetector(
+              onTap: () => onChanged?.call(!isCompleted),
+              behavior: HitTestBehavior.opaque,
+              child: Container(
+                width: 26,
+                height: 26,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isCompleted ? ColorsTheme.selesai : Colors.transparent,
+                  border: Border.all(
+                    color: isCompleted
+                        ? ColorsTheme.selesai
+                        : ColorsTheme.aksen,
+                    width: 2,
                   ),
-                  SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: TextStyle(
-                            color: ColorsTheme.teks,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            decoration: isCompleted
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                ),
+                child: isCompleted
+                    ? Center(
+                        child: Icon(
+                          Icons.check_rounded,
+                          size: 16,
+                          color: ColorsTheme.teksSelesai,
                         ),
-                        SizedBox(height: 4),
-                        Text(
-                          tugasapa,
-                          style: TextStyle(
-                            color: ColorsTheme.teks,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
+                      )
+                    : null,
+              ),
+            ),
+            const SizedBox(width: 14),
+
+            // Title & Subtitle
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: isCompleted
+                          ? ColorsTheme.teksSekunder
+                          : ColorsTheme.teks,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      decoration: isCompleted
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                      decorationColor: ColorsTheme.teksSekunder,
                     ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    tugasapa,
+                    style: TextStyle(
+                      color: ColorsTheme.teksSekunder,
+                      fontSize: 12,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ],
               ),
             ),
-            SizedBox(width: 15),
+            const SizedBox(width: 12),
+
+            // Chip Status / Deadline
             Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
               decoration: BoxDecoration(
-                color: isCompleted ? ColorsTheme.selesai : ColorsTheme.aksen,
-                borderRadius: BorderRadius.circular(30),
+                color: chipBg,
+                borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
-                isCompleted ? 'Selesai' : sisaWaktu,
+                chipLabel,
                 style: TextStyle(
-                  color: ColorsTheme.teks,
-                  fontSize: 10,
+                  color: chipTextColor,
+                  fontSize: 11,
                   fontWeight: FontWeight.bold,
                 ),
               ),

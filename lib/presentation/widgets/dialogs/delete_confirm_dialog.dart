@@ -18,16 +18,11 @@ Future<bool> showDeleteConfirmDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: Text(
         title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: ColorsTheme.teks,
-        ),
+        style: TextStyle(fontWeight: FontWeight.bold, color: ColorsTheme.teks),
       ),
       content: Text(
         message ?? 'Apakah kamu yakin ingin menghapus "$itemName"?',
-        style: TextStyle(
-          color: ColorsTheme.teks,
-        ),
+        style: TextStyle(color: ColorsTheme.teks),
       ),
       actions: [
         TextButton(
@@ -45,10 +40,7 @@ Future<bool> showDeleteConfirmDialog(
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          child: Text(
-            'Hapus',
-            style: TextStyle(color: ColorsTheme.latarKomponen),
-          ),
+          child: const Text('Hapus', style: TextStyle(color: Colors.white)),
         ),
       ],
     ),

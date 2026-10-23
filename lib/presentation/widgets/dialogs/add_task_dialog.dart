@@ -188,7 +188,7 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
                           onPressed: _handleSave,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorsTheme.aksen,
-                            foregroundColor: ColorsTheme.teks,
+                            foregroundColor: ColorsTheme.teksDiAksen,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),

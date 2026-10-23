@@ -2,7 +2,7 @@ import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:flutter/material.dart';
 
-/// Menampilkan bottom sheet pemilih tema (Blueberry Oat / Midnight Navy)
+/// Menampilkan bottom sheet pemilih tema (Matcha Paper / Rainy Garden)
 Future<void> showThemePickerSheet(
   BuildContext context, {
   VoidCallback? onThemeChanged,
@@ -26,7 +26,7 @@ Future<void> showThemePickerSheet(
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
+                  color: ColorsTheme.teksSekunder.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -41,15 +41,16 @@ Future<void> showThemePickerSheet(
               ),
               const SizedBox(height: 20),
 
-              // Blueberry Oat (Light)
+              // Matcha Paper (Light)
               _buildThemeOption(
-                name: 'Blueberry Oat',
-                subtitle: 'Tema terang yang lembut',
+                name: 'Matcha Paper',
+                subtitle: 'Kertas lukisan tinta',
                 colors: [
                   ColorLight.latar,
                   ColorLight.kartuUtama,
                   ColorLight.aksen,
                   ColorLight.selesai,
+                  ColorLight.chipLempung,
                 ],
                 isSelected: !ColorsTheme.isDarkMode,
                 onTap: () {
@@ -61,15 +62,16 @@ Future<void> showThemePickerSheet(
               ),
               const SizedBox(height: 12),
 
-              // Midnight Navy (Dark)
+              // Rainy Garden (Dark)
               _buildThemeOption(
-                name: 'Blueberry Oat Dark',
-                subtitle: 'Tema gelap yang elegan',
+                name: 'Rainy Garden',
+                subtitle: 'Arang kehijauan',
                 colors: [
                   ColorDark.latar,
                   ColorDark.kartuUtama,
                   ColorDark.aksen,
                   ColorDark.selesai,
+                  ColorDark.chipLempung,
                 ],
                 isSelected: ColorsTheme.isDarkMode,
                 onTap: () {
@@ -102,7 +104,9 @@ Widget _buildThemeOption({
           : ColorsTheme.latar,
       borderRadius: BorderRadius.circular(16),
       border: Border.all(
-        color: isSelected ? ColorsTheme.kartuUtama : Colors.grey.shade300,
+        color: isSelected
+            ? ColorsTheme.kartuUtama
+            : ColorsTheme.teksSekunder.withValues(alpha: 0.2),
         width: isSelected ? 2 : 1,
       ),
     ),
@@ -120,14 +124,14 @@ Widget _buildThemeOption({
                 children: colors
                     .map(
                       (c) => Container(
-                        width: 24,
-                        height: 24,
+                        width: 22,
+                        height: 22,
                         margin: const EdgeInsets.only(right: 6),
                         decoration: BoxDecoration(
                           color: c,
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.black.withValues(alpha: 0.1),
+                            color: Colors.black.withValues(alpha: 0.15),
                           ),
                         ),
                       ),

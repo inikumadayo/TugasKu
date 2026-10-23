@@ -117,7 +117,7 @@ class _ScheduleState extends State<Schedule> {
         child: SafeArea(
           child: Column(
             children: [
-              SizedBox(height: 25),
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -133,11 +133,11 @@ class _ScheduleState extends State<Schedule> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 1),
+                        const SizedBox(height: 1),
                         Text(
                           _getFormattedDate(),
                           style: TextStyle(
-                            color: ColorsTheme.teks,
+                            color: ColorsTheme.teksSekunder,
                             fontSize: 14,
                           ),
                         ),
@@ -156,7 +156,7 @@ class _ScheduleState extends State<Schedule> {
                       child: Center(
                         child: Icon(
                           Icons.add_rounded,
-                          color: ColorsTheme.teks,
+                          color: ColorsTheme.teksDiAksen,
                           size: 30,
                         ),
                       ),
@@ -164,7 +164,7 @@ class _ScheduleState extends State<Schedule> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: List.generate(_filterDays.length, (index) {
@@ -188,7 +188,7 @@ class _ScheduleState extends State<Schedule> {
                   );
                 }),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Expanded(
                 child: _schedules.isEmpty
                     ? Center(
@@ -202,7 +202,7 @@ class _ScheduleState extends State<Schedule> {
                                 alpha: 0.5,
                               ),
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             Text(
                               'Tidak ada jadwal hari ${_getNamaHari(_selectedHari)}',
                               style: TextStyle(

@@ -9,6 +9,8 @@ class ScheduleModel {
   final String waktuSelesai; // format "HH:mm"
   final String jenis;
   final int hari; // 1=Senin, 2=Selasa, ..., 7=Minggu
+  final String? dosenPengampu;
+  final int? sks;
 
   const ScheduleModel({
     required this.id,
@@ -18,6 +20,8 @@ class ScheduleModel {
     required this.waktuSelesai,
     required this.jenis,
     required this.hari,
+    this.dosenPengampu,
+    this.sks,
   });
 
   ScheduleModel copyWith({
@@ -28,6 +32,8 @@ class ScheduleModel {
     String? waktuSelesai,
     String? jenis,
     int? hari,
+    String? dosenPengampu,
+    int? sks,
   }) {
     return ScheduleModel(
       id: id ?? this.id,
@@ -37,6 +43,8 @@ class ScheduleModel {
       waktuSelesai: waktuSelesai ?? this.waktuSelesai,
       jenis: jenis ?? this.jenis,
       hari: hari ?? this.hari,
+      dosenPengampu: dosenPengampu ?? this.dosenPengampu,
+      sks: sks ?? this.sks,
     );
   }
 
@@ -50,19 +58,23 @@ class ScheduleModel {
       'waktuSelesai': waktuSelesai,
       'jenis': jenis,
       'hari': hari,
+      'dosenPengampu': dosenPengampu ?? '',
+      'sks': sks,
     };
   }
 
   /// Buat ScheduleModel dari Map (data Hive)
   factory ScheduleModel.fromMap(Map<dynamic, dynamic> map) {
     return ScheduleModel(
-      id: map['id'] as String,
-      title: map['title'] as String,
-      ruang: map['ruang'] as String,
-      waktuMulai: map['waktuMulai'] as String,
-      waktuSelesai: map['waktuSelesai'] as String,
-      jenis: map['jenis'] as String,
-      hari: map['hari'] as int,
+      id: (map['id'] as String?) ?? '',
+      title: (map['title'] as String?) ?? '',
+      ruang: (map['ruang'] as String?) ?? '',
+      waktuMulai: (map['waktuMulai'] as String?) ?? '',
+      waktuSelesai: (map['waktuSelesai'] as String?) ?? '',
+      jenis: (map['jenis'] as String?) ?? '',
+      hari: (map['hari'] as int?) ?? 1,
+      dosenPengampu: map['dosenPengampu'] as String?,
+      sks: map['sks'] as int?,
     );
   }
 

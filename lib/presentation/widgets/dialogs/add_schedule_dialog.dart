@@ -35,6 +35,8 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
   late final TextEditingController _ruangController;
   late final TextEditingController _waktuMulaiController;
   late final TextEditingController _waktuSelesaiController;
+  late final TextEditingController _dosenController;
+  late final TextEditingController _sksController;
   String _selectedJenis = 'Mata Kuliah';
   late int _selectedHari;
 
@@ -53,6 +55,8 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
     _ruangController = TextEditingController();
     _waktuMulaiController = TextEditingController();
     _waktuSelesaiController = TextEditingController();
+    _dosenController = TextEditingController();
+    _sksController = TextEditingController();
     _selectedHari = widget.defaultHari;
   }
 
@@ -62,6 +66,8 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
     _ruangController.dispose();
     _waktuMulaiController.dispose();
     _waktuSelesaiController.dispose();
+    _dosenController.dispose();
+    _sksController.dispose();
     super.dispose();
   }
 
@@ -86,6 +92,9 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
       return;
     }
 
+    final sksText = _sksController.text.trim();
+    final sksValue = sksText.isNotEmpty ? int.tryParse(sksText) : null;
+
     final schedule = ScheduleModel(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: _titleController.text,
@@ -94,6 +103,8 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
       waktuSelesai: _waktuSelesaiController.text,
       jenis: _selectedJenis,
       hari: _selectedHari,
+      dosenPengampu: _dosenController.text.trim(),
+      sks: sksValue,
     );
 
     await DatabaseHelper.addSchedule(schedule);
@@ -206,6 +217,56 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                   controller: _ruangController,
                   hint: 'Ruang Lab 2',
                 ),
+                const SizedBox(height: 20),
+
+                // Dosen Pengampu
+                _buildLabel('Dosen Pengampu'),
+                const SizedBox(height: 8),
+                _buildInputField(
+                  controller: _dosenController,
+                  hint: 'Nama dosen (opsional)',
+                ),
+                const SizedBox(height: 20),
+
+                // SKS
+                _buildLabel('SKS (opsional)'),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: 100,
+                  child: TextField(
+                    controller: _sksController,
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: ColorsTheme.teks,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: '3',
+                      hintStyle: TextStyle(color: Colors.grey.shade400),
+                      filled: true,
+                      fillColor: ColorsTheme.latar,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: BorderSide(
+                          color: ColorsTheme.kartuUtama,
+                          width: 1.5,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 28),
 
                 // Action buttons
@@ -241,7 +302,7 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                           onPressed: _handleSave,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: ColorsTheme.aksen,
-                            foregroundColor: ColorsTheme.teks,
+                            foregroundColor: ColorsTheme.teksDiAksen,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(24),

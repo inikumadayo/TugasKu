@@ -140,7 +140,7 @@ Future<void> showNotificationConfigSheet(
                         decoration: BoxDecoration(
                           color:
                               (isKuliah
-                                      ? ColorsTheme.chipMentega
+                                      ? ColorsTheme.chipLempung
                                       : ColorsTheme.aksen)
                                   .withValues(alpha: 0.25),
                           borderRadius: BorderRadius.circular(14),

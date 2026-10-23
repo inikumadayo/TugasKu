@@ -287,7 +287,7 @@ Future<bool> showEditProfileDialog(
               ),
               child: Text(
                 'Simpan',
-                style: TextStyle(color: ColorsTheme.latarKomponen),
+                style: TextStyle(color: ColorsTheme.teksDiKartu),
               ),
             ),
           ],

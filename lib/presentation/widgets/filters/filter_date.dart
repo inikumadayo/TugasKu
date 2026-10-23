@@ -27,7 +27,7 @@ class _FilterDateState extends State<FilterDate> {
         color: widget.isSelected
             ? ColorsTheme.kartuUtama
             : ColorsTheme.latarKomponen,
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -36,22 +36,22 @@ class _FilterDateState extends State<FilterDate> {
             widget.day,
             style: TextStyle(
               color: widget.isSelected
-                  ? ColorsTheme.latarKomponen
-                  : ColorsTheme.teks,
-              fontSize: 14,
+                  ? ColorsTheme.teksDiKartu
+                  : ColorsTheme.teksSekunder,
+              fontSize: 13,
               fontWeight: widget.isSelected
                   ? FontWeight.bold
                   : FontWeight.normal,
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 3),
           Text(
             widget.date,
             style: TextStyle(
               color: widget.isSelected
-                  ? ColorsTheme.latarKomponen
+                  ? ColorsTheme.teksDiKartu
                   : ColorsTheme.teks,
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.bold,
             ),
           ),

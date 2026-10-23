@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/models/schedule_model.dart';
@@ -31,6 +32,9 @@ class DatabaseHelper {
 
   /// Mendapatkan box schedule
   static Box get _schedules => Hive.box(_scheduleBox);
+
+  /// Listenable untuk reaktivitas perubahan box schedule
+  static ValueListenable<Box> schedulesListenable() => _schedules.listenable();
 
   /// Tambah jadwal baru
   static Future<void> addSchedule(ScheduleModel schedule) async {
@@ -76,6 +80,9 @@ class DatabaseHelper {
 
   /// Mendapatkan box task
   static Box get _tasks => Hive.box(_taskBox);
+
+  /// Listenable untuk reaktivitas perubahan box task
+  static ValueListenable<Box> tasksListenable() => _tasks.listenable();
 
   /// Tambah tugas baru
   static Future<void> addTask(TaskModel task) async {
@@ -449,10 +456,7 @@ class DatabaseHelper {
         'Default Sistem';
   }
 
-  static Future<void> setTaskReminderSound(
-    String? path,
-    String? name,
-  ) async {
+  static Future<void> setTaskReminderSound(String? path, String? name) async {
     final box = Hive.isBoxOpen(_settingsBox)
         ? Hive.box(_settingsBox)
         : await Hive.openBox(_settingsBox);

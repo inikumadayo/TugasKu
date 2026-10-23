@@ -153,28 +153,37 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                 ),
                 const SizedBox(height: 20),
 
-                // Nama mata kuliah
+                // 1. Judul Mata Kuliah
                 _buildLabel('Judul'),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 _buildInputField(
                   controller: _titleController,
                   hint: 'Pemrograman Mobile',
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
 
-                // Jenis
+                // 2. Dosen Pengampu (Opsional)
+                _buildLabel('Dosen Pengampu (opsional)'),
+                const SizedBox(height: 6),
+                _buildInputField(
+                  controller: _dosenController,
+                  hint: 'Contoh: Dr. Budi Santoso',
+                ),
+                const SizedBox(height: 16),
+
+                // 3. Jenis
                 _buildLabel('Jenis'),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 _buildJenisSelector(),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
 
-                // Hari selector
+                // 4. Hari selector
                 _buildLabel('Hari'),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 _buildDaySelector(),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
 
-                // Mulai & Selesai side by side
+                // 5. Mulai & Selesai (Berdampingan)
                 Row(
                   children: [
                     Expanded(
@@ -182,7 +191,7 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildLabel('Mulai'),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
                           _buildTimeField(
                             controller: _waktuMulaiController,
                             hint: '07.30',
@@ -191,13 +200,13 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(width: 14),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           _buildLabel('Selesai'),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
                           _buildTimeField(
                             controller: _waktuSelesaiController,
                             hint: '09.10',
@@ -208,66 +217,73 @@ class _AddScheduleSheetState extends State<_AddScheduleSheet> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 16),
 
-                // Ruang
-                _buildLabel('Ruang'),
-                const SizedBox(height: 8),
-                _buildInputField(
-                  controller: _ruangController,
-                  hint: 'Ruang Lab 2',
-                ),
-                const SizedBox(height: 20),
-
-                // Dosen Pengampu
-                _buildLabel('Dosen Pengampu'),
-                const SizedBox(height: 8),
-                _buildInputField(
-                  controller: _dosenController,
-                  hint: 'Nama dosen (opsional)',
-                ),
-                const SizedBox(height: 20),
-
-                // SKS
-                _buildLabel('SKS (opsional)'),
-                const SizedBox(height: 8),
-                SizedBox(
-                  width: 100,
-                  child: TextField(
-                    controller: _sksController,
-                    keyboardType: TextInputType.number,
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: ColorsTheme.teks,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: '3',
-                      hintStyle: TextStyle(color: Colors.grey.shade400),
-                      filled: true,
-                      fillColor: ColorsTheme.latar,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide.none,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide.none,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                        borderSide: BorderSide(
-                          color: ColorsTheme.kartuUtama,
-                          width: 1.5,
-                        ),
+                // 6. Ruang & SKS (Berdampingan)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildLabel('Ruang'),
+                          const SizedBox(height: 6),
+                          _buildInputField(
+                            controller: _ruangController,
+                            hint: 'Ruang Lab 2',
+                          ),
+                        ],
                       ),
                     ),
-                  ),
+                    const SizedBox(width: 14),
+                    SizedBox(
+                      width: 90,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildLabel('SKS'),
+                          const SizedBox(height: 6),
+                          TextField(
+                            controller: _sksController,
+                            keyboardType: TextInputType.number,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: ColorsTheme.teks,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: '3',
+                              hintStyle: TextStyle(color: Colors.grey.shade400),
+                              filled: true,
+                              fillColor: ColorsTheme.latar,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 14,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide.none,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide.none,
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(14),
+                                borderSide: BorderSide(
+                                  color: ColorsTheme.kartuUtama,
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 28),
+                const SizedBox(height: 24),
 
                 // Action buttons
                 Row(

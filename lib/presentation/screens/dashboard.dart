@@ -1,10 +1,14 @@
+import 'package:adistyclone/core/constants/mascot_assets.dart';
 import 'package:adistyclone/core/utils/image_helper.dart';
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
+import 'package:adistyclone/services/update_service.dart';
 import 'package:adistyclone/presentation/widgets/cards/hero_card.dart';
 import 'package:adistyclone/presentation/widgets/cards/task_item.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/edit_profile_dialog.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/update_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -18,10 +22,21 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     super.initState();
     _initTasks();
+    _checkUpdateSilently();
   }
 
   void _initTasks() async {
     await DatabaseHelper.deleteExpiredWeeklyTasks();
+  }
+
+  void _checkUpdateSilently() async {
+    await Future.delayed(const Duration(milliseconds: 2000));
+    if (!mounted) return;
+
+    final update = await UpdateService.checkForUpdate();
+    if (update != null && update.hasUpdate && mounted) {
+      await showUpdateDialog(context, updateInfo: update);
+    }
   }
 
   void checkBoxChanged(bool? value, String taskId) async {
@@ -81,11 +96,13 @@ class _DashboardState extends State<Dashboard> {
                                     fit: BoxFit.cover,
                                   );
                                 }
-                                return Center(
-                                  child: Icon(
-                                    Icons.person_outline_rounded,
-                                    color: ColorsTheme.teks,
-                                    size: 30,
+                                return Container(
+                                  padding: const EdgeInsets.all(4),
+                                  child: SvgPicture.asset(
+                                    MascotAssets.lofi,
+                                    width: 44,
+                                    height: 44,
+                                    fit: BoxFit.contain,
                                   ),
                                 );
                               },
@@ -119,6 +136,11 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ],
                           ),
+                        ),
+                        const SizedBox(width: 8),
+                        SvgPicture.asset(
+                          MascotAssets.melambai,
+                          height: 46,
                         ),
                       ],
                     ),
@@ -162,12 +184,9 @@ class _DashboardState extends State<Dashboard> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(
-                                  Icons.task_alt_rounded,
-                                  size: 56,
-                                  color: ColorsTheme.teksSekunder.withValues(
-                                    alpha: 0.4,
-                                  ),
+                                SvgPicture.asset(
+                                  MascotAssets.selesai,
+                                  height: 80,
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
@@ -175,6 +194,7 @@ class _DashboardState extends State<Dashboard> {
                                   style: TextStyle(
                                     color: ColorsTheme.teksSekunder,
                                     fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ],

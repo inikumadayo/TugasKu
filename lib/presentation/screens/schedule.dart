@@ -1,3 +1,4 @@
+import 'package:adistyclone/core/constants/mascot_assets.dart';
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
@@ -7,6 +8,7 @@ import 'package:adistyclone/presentation/widgets/dialogs/add_schedule_dialog.dar
 import 'package:adistyclone/presentation/widgets/dialogs/delete_confirm_dialog.dart';
 import 'package:adistyclone/presentation/widgets/filters/filter_date.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Schedule extends StatefulWidget {
   const Schedule({super.key});
@@ -195,14 +197,11 @@ class _ScheduleState extends State<Schedule> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              Icons.event_busy_rounded,
-                              size: 64,
-                              color: ColorsTheme.teksSekunder.withValues(
-                                alpha: 0.5,
-                              ),
+                            SvgPicture.asset(
+                              MascotAssets.tidur,
+                              height: 90,
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 14),
                             Text(
                               'Tidak ada jadwal hari ${_getNamaHari(_selectedHari)}',
                               style: TextStyle(

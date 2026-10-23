@@ -1,8 +1,10 @@
+import 'package:adistyclone/core/constants/mascot_assets.dart';
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/schedule_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class HeroDash extends StatefulWidget {
   const HeroDash({super.key});
@@ -83,14 +85,13 @@ class _HeroDashState extends State<HeroDash> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              SvgPicture.asset(
                 _hasSchedulesToday
-                    ? Icons.task_alt_rounded
-                    : Icons.event_available_rounded,
-                color: ColorsTheme.teksDiKartu.withValues(alpha: 0.8),
-                size: 48,
+                    ? MascotAssets.matcha
+                    : MascotAssets.tidur,
+                height: 68,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               Text(
                 _hasSchedulesToday
                     ? 'Tidak ada jadwal lagi hari ini'

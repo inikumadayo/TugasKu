@@ -1,5 +1,7 @@
+import 'package:adistyclone/core/constants/mascot_assets.dart';
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Menampilkan bottom sheet tentang aplikasi (informasi versi, deskripsi, quote, credit & link trakteer)
@@ -43,18 +45,18 @@ Future<void> showAboutSheet(BuildContext context) async {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // App Icon
+                      // App / Mascot Icon
                       Container(
-                        width: 64,
-                        height: 64,
+                        width: 72,
+                        height: 72,
                         decoration: BoxDecoration(
                           color: ColorsTheme.kartuUtama.withValues(alpha: 0.12),
-                          borderRadius: BorderRadius.circular(18),
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        child: Icon(
-                          Icons.school_rounded,
-                          color: ColorsTheme.kartuUtama,
-                          size: 32,
+                        padding: const EdgeInsets.all(8),
+                        child: SvgPicture.asset(
+                          MascotAssets.payung,
+                          fit: BoxFit.contain,
                         ),
                       ),
                       const SizedBox(height: 12),

@@ -1,3 +1,4 @@
+import 'package:adistyclone/core/constants/mascot_assets.dart';
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
@@ -7,6 +8,7 @@ import 'package:adistyclone/presentation/widgets/dialogs/add_task_dialog.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/delete_confirm_dialog.dart';
 import 'package:adistyclone/presentation/widgets/filters/filter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Task extends StatefulWidget {
   const Task({super.key});
@@ -226,14 +228,11 @@ class _TaskState extends State<Task> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                Icons.task_alt_rounded,
-                                size: 64,
-                                color: ColorsTheme.teksSekunder.withValues(
-                                  alpha: 0.5,
-                                ),
+                              SvgPicture.asset(
+                                MascotAssets.selesai,
+                                height: 96,
                               ),
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 14),
                               Text(
                                 'Tidak ada tugas',
                                 style: TextStyle(

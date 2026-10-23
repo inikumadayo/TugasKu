@@ -1,13 +1,18 @@
 import 'dart:convert';
 
+import 'package:adistyclone/core/constants/mascot_assets.dart';
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/services/notification_service.dart';
+import 'package:adistyclone/services/update_service.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/edit_profile_dialog.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/update_dialog.dart';
 import 'package:adistyclone/presentation/widgets/sheets/about_sheet.dart';
 import 'package:adistyclone/presentation/widgets/sheets/notification_config_sheet.dart';
 import 'package:adistyclone/presentation/widgets/sheets/theme_picker_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -19,12 +24,44 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
   late bool _pengingatTugas;
   late bool _notifikasiKuliah;
+  bool _isCheckingUpdate = false;
+  String _currentAppVersion = '1.1.0';
 
   @override
   void initState() {
     super.initState();
     _pengingatTugas = DatabaseHelper.isTaskReminderEnabled();
     _notifikasiKuliah = DatabaseHelper.isClassNotificationEnabled();
+    _loadAppVersion();
+  }
+
+  void _loadAppVersion() async {
+    try {
+      final info = await PackageInfo.fromPlatform();
+      if (mounted) setState(() => _currentAppVersion = info.version);
+    } catch (_) {}
+  }
+
+  Future<void> _manualCheckUpdate() async {
+    setState(() => _isCheckingUpdate = true);
+    final update = await UpdateService.checkForUpdate();
+    if (!mounted) return;
+    setState(() => _isCheckingUpdate = false);
+
+    if (update != null && update.hasUpdate) {
+      await showUpdateDialog(context, updateInfo: update);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            update == null
+                ? 'Tidak dapat terhubung ke GitHub. Periksa koneksi internet.'
+                : 'TugasKu sudah menggunakan versi terbaru (v${update.currentVersion}). 🎉',
+          ),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
   }
 
   @override
@@ -184,10 +221,12 @@ class _SettingState extends State<Setting> {
                               color: ColorsTheme.kartuUtama.withValues(
                                 alpha: 0.15,
                               ),
-                              child: Icon(
-                                Icons.person_outline_rounded,
-                                color: ColorsTheme.kartuUtama,
-                                size: 45,
+                              padding: const EdgeInsets.all(8),
+                              child: SvgPicture.asset(
+                                MascotAssets.lofi,
+                                width: 70,
+                                height: 70,
+                                fit: BoxFit.contain,
                               ),
                             ),
                     ),
@@ -331,10 +370,7 @@ class _SettingState extends State<Setting> {
           Text(
             label,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              color: ColorsTheme.teksSekunder,
-              fontSize: 11,
-            ),
+            style: TextStyle(color: ColorsTheme.teksSekunder, fontSize: 11),
           ),
         ],
       ),
@@ -441,6 +477,36 @@ class _SettingState extends State<Setting> {
               activeTrackColor: ColorsTheme.kartuUtama,
             ),
             onTap: () => _openNotificationConfig(NotificationConfigType.kuliah),
+          ),
+          _buildDivider(),
+
+          // Periksa pembaruan
+          _buildSettingTile(
+            icon: Icons.system_update_rounded,
+            iconBgColor: ColorsTheme.chipBatu.withValues(alpha: 0.3),
+            iconColor: ColorsTheme.isDarkMode
+                ? ColorsTheme.teksChipBatu
+                : ColorsTheme.chipBatu,
+            title: 'Periksa pembaruan',
+            subtitle: _isCheckingUpdate
+                ? 'Memeriksa rilis terbaru...'
+                : 'Versi $_currentAppVersion',
+            trailing: _isCheckingUpdate
+                ? SizedBox(
+                    width: 18,
+                    height: 18,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(ColorsTheme.aksen),
+                    ),
+                  )
+                : Icon(
+                    Icons.chevron_right_rounded,
+                    color: ColorsTheme.teksSekunder,
+                    size: 20,
+                  ),
+            onTap: _isCheckingUpdate ? null : _manualCheckUpdate,
           ),
           _buildDivider(),
 

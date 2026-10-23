@@ -5,102 +5,136 @@
   <img src="https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white" alt="Dart" />
   <img src="https://img.shields.io/badge/Hive-Local%20DB-FDB913?style=for-the-badge" alt="Hive" />
   <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Web-blue?style=for-the-badge" alt="Platform" />
-  <img src="https://img.shields.io/badge/Version-1.1.0-brightgreen?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-1.2.0-brightgreen?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/Theme-Rainy%20Garden%20%26%20Matcha-2E3A42?style=for-the-badge" alt="Theme" />
 </p>
 
 ---
 
 ## 🌟 Tentang TugasKu
 
-**TugasKu** adalah aplikasi manajemen jadwal perkuliahan dan tugas harian yang dirancang khusus untuk mahasiswa agar tetap produktif, teratur, dan tidak ketinggalan deadline. Dibangun secara *offline-first* menggunakan Flutter dan Hive database, TugasKu menyajikan antarmuka modern bernuansa *Blueberry Oat* yang nyaman di mata, responsif, dan kaya fitur tanpa memerlukan akun ataupun koneksi internet.
+**TugasKu** adalah aplikasi manajemen jadwal perkuliahan dan tugas harian yang dirancang khusus untuk mahasiswa agar tetap produktif, teratur, dan tidak ketinggalan deadline. 
+
+Dibangun secara *offline-first* menggunakan **Flutter** dan database lokal **Hive**, TugasKu hadir dengan palet warna bernuansa **Rainy Garden & Matcha Paper** yang sejuk dan nyaman di mata, ditemani maskot **"Lumut"** yang interaktif, serta dilengkapi fitur **In-App Auto-Update langsung dari GitHub Releases**.
 
 ---
 
 ## ✨ Fitur Utama
 
 ### 1. 🏠 Dashboard Pintar
-- **Hero Countdown Card:** Menampilkan jadwal kuliah terdekat atau yang sedang berlangsung secara *real-time* lengkap dengan status hitung mundur (misal: *"dalam 30 Menit"* atau *"Sedang berlangsung"*).
-- **Profil Cepat:** Akses cepat ke profil pengguna dengan foto kustom, sapaan personal, dan bio/status.
-- **Daftar Tugas Mendesak:** Tinjauan langsung tugas yang belum selesai hari ini dengan kemampuan centang langsung dari beranda.
+- **Hero Countdown Card:** Menampilkan jadwal kuliah terdekat secara *real-time* dengan hitung mundur dinamis (misal: *"dalam 30 Menit"* atau *"Sedang berlangsung"*), lengkap dengan badge jam, ruangan, jumlah SKS, dan nama dosen pengampu.
+- **Sapaan Maskot Lumut:** Maskot Lumut yang melambai menyapa di header profil pengguna.
+- **Tinjauan Tugas Mendesak:** Menampilkan daftar tugas yang belum tuntas, dengan kemampuan menyelesaikan tugas langsung lewat centang di beranda.
+- **State Selesai Menenangkan:** Saat semua kuliah hari ini tuntas, kartu hero bertransformasi menampilkan Lumut yang sedang santai menikmati matcha.
 
 ### 2. 📅 Jadwal Kuliah Mingguan
-- **Filter Hari Interaktif:** Navigasi cepat antara hari Senin hingga Minggu menggunakan chip tanggal yang dinamis.
-- **Indikator Kelas Aktif:** Penanda visual `ON` otomatis pada mata kuliah yang sedang berlangsung.
-- **Detail Lengkap:** Informasi mata kuliah mencakup nama matkul, kode/ruang kelas, jam mulai & selesai, jenis sesi (Teori/Praktikum), hingga dosen pengampu.
-- **Manajemen Jadwal:** Tambah, ubah, dan hapus jadwal dengan konfirmasi dialog yang aman.
+- **Filter Hari Interaktif:** Navigasi cepat antara hari Senin hingga Sabtu dengan chip tanggal mingguan dinamis.
+- **Informasi Akademik Lengkap:** Menampilkan mata kuliah, nama dosen pengampu, badge jenis (Teori/Praktikum/Asprak), badge ruangan, dan badge SKS.
+- **Indikator Kelas Aktif:** Penanda visual highlight otomatis pada sesi kuliah yang sedang berlangsung.
+- **Form Tambah Jadwal Ringkas:** Form bottom-sheet yang dikelompokkan secara logis dan hemat ruang (input Ruang & SKS berdampingan).
 
 ### 3. ✅ Pengelola & Pelacak Tugas (Task Manager)
-- **Kategori & Filter:** Filter tugas berdasarkan *Semua*, *Belum Selesai*, dan *Selesai*.
+- **Filter Kategori:** Tinjau tugas berdasarkan *Semua*, *Belum Selesai*, dan *Selesai*.
 - **Progress Bar Mingguan:** Indikator visual progres penyelesaian tugas minggu berjalan secara dinamis.
-- **Auto-Cleanup Tugas Kedaluwarsa:** Pembersihan otomatis tugas mingguan yang sudah lewat agar daftar tetap rapi.
-- **Sisa Waktu Real-Time:** Penanda deadline yang informatif dan mudah dipahami.
+- **Pembersihan Otomatis (Auto-Cleanup):** Tugas yang sudah lewat deadline minggu sebelumnya dibersihkan secara otomatis setiap awal pekan (Senin).
+- **Celebration State:** Saat seluruh tugas selesai, Lumut merayakan keberhasilanmu dengan animasi selebrasi.
 
-### 4. 🔔 Notifikasi Lokal (Offline Push Notifications)
-- **Pengingat Kelas:** Pemberitahuan otomatis sebelum perkuliahan dimulai agar tidak terlambat hadir.
-- **Pengingat Tugas:** Alarm notifikasi pengingat batas waktu penyelesaian tugas kuliah.
-- **Dukungan Timezone:** Menggunakan standar waktu lokal (`Asia/Jakarta`) yang akurat tanpa butuh server eksternal.
+### 4. 🌿 Maskot Interaktif "Lumut"
+Aplikasi diperkaya dengan 11 pose ilustrasi SVG maskot **Lumut** yang dirancang selaras dengan tema aplikasi:
+- 🎒 `lumut_berangkat` — Siap berangkat menyambut perkuliahan & update baru.
+- 🍵 `lumut_matcha` — Santai menikmati matcha saat semua kuliah telah selesai.
+- 📖 `lumut_tidur` — Tidur di atas buku saat hari libur / tidak ada jadwal.
+- 🎉 `lumut_selesai` — Merayakan seluruh tugas yang berhasil diselesaikan.
+- 👋 `lumut_melambai` — Menyapa ramah di header dashboard.
+- 🎧 `lumut_lofi` — Mendengarkan musik lofi (avatar default pengguna).
+- 🍃 `lumut_payung` — Berpayung daun ikonik khas nuansa *Rainy Garden*.
+- 💻 `lumut_mengetik` & 📚 `lumut_belajar` — Fokus mengerjakan tugas & belajar.
 
-### 5. 🎨 Personalisasi & Tema
-- **Pilihan Tema Warna:**
-  - 🫐 **Blueberry Oat (Light):** Nuansa hangat, lembut, dan elegan.
-  - 🌙 **Blueberry Oat Dark (Dark):** Nuansa gelap kontras tinggi yang nyaman di malam hari.
-- **Kustomisasi Profil:** Ganti foto avatar dari galeri/kamera (disimpan dalam format Base64 di penyimpanan lokal) serta ubah nama dan moto/status kapan saja.
+### 5. 🚀 In-App GitHub Auto-Update & Installer
+- **Pengecekan Otomatis (Silent Check):** Aplikasi otomatis mengecek rilis terbaru dari repositori GitHub [`inikumadayo/TugasKu`](https://github.com/inikumadayo/TugasKu) saat pertama kali dibuka.
+- **Pengecekan Manual:** Tombol *"Periksa Pembaruan"* di tab Pengaturan lengkap dengan badge versi terpasang.
+- **In-App Download:** Mengunduh file APK langsung di dalam aplikasi disertai progress bar real-time (persentase & ukuran MB).
+- **Auto-Install:** Otomatis memicu package installer Android untuk memasang pembaruan tanpa perlu membuka browser manual.
 
-### 6. 💾 Backup & Restore Data
-- **Ekspor Data:** Cadangkan seluruh jadwal, tugas, profil, dan preferensi aplikasi ke file cadangan JSON.
-- **Impor Data:** Pulihkan data cadangan kapan saja dengan mudah melalui file picker.
+### 6. 🎨 Tema & Personalisasi
+- **Pilihan Tema Elegan:**
+  - 🌧️ **Rainy Garden (Dark):** Nuansa arang kehijauan (`#1A1F1C`), hijau lumut (`#46624D`), dan aksen amber hangat (`#E3A65C`).
+  - 🍵 **Matcha Paper (Light):** Nuansa kertas lukisan tinta (`#F0EFE7`) dan hijau teh matcha yang lembut.
+- **Kustomisasi Profil:** Ganti foto avatar dan banner langsung dari galeri dengan penyimpanan lokal Base64.
+- **Pengingat & Suara Kustom:** Atur jeda waktu notifikasi kuliah & tugas serta pilih file audio nada dering sendiri.
 
 ---
 
-## 🏗️ Struktur Folder
+## 🏗️ Struktur Proyek
 
 ```text
 lib/
-├── assets/
-│   └── colors.dart                  # Palet warna tema (Light & Dark)
+├── assets/                          # Folder aset internal
+├── core/
+│   ├── constants/
+│   │   └── mascot_assets.dart       # Path konstanta ilustrasi maskot Lumut
+│   ├── theme/
+│   │   ├── app_theme.dart           # Definisi ThemeData M3 (Light & Dark)
+│   │   └── colors.dart              # Palet warna Rainy Garden & Matcha Paper
+│   └── utils/
+│       ├── date_time_helper.dart    # Helper format tanggal, waktu, & heartbeat
+│       └── image_helper.dart        # Helper kompresi & konversi Base64 gambar
 ├── database/
-│   └── database_helper.dart         # Wrapper CRUD NoSQL lokal (Hive)
+│   └── database_helper.dart         # Database helper NoSQL lokal (Hive) & listenables
 ├── models/
-│   ├── schedule_model.dart          # Data model jadwal kuliah
-│   ├── task_model.dart              # Data model tugas kuliah
-│   └── user_profile_model.dart      # Data model profil pengguna
-├── pages/
-│   ├── dashboard.dart               # Tampilan beranda & ringkasan
-│   ├── homepage.dart                # Navigasi tab utama (BottomNavigationBar)
-│   ├── schedule.dart                # Halaman jadwal kuliah harian & mingguan
-│   ├── setting.dart                 # Pengaturan profil, tema, notifikasi, & backup
-│   └── task.dart                    # Halaman daftar & progres tugas
+│   ├── schedule_model.dart          # Model jadwal kuliah (+ dosenPengampu & SKS)
+│   ├── task_model.dart              # Model tugas kuliah
+│   └── user_profile_model.dart      # Model profil pengguna
+├── presentation/
+│   ├── screens/
+│   │   ├── dashboard.dart           # Layar Beranda utama & sapaan Lumut
+│   │   ├── homepage.dart            # Navigasi tab bar bawah & reactive stack
+│   │   ├── schedule.dart            # Layar Jadwal kuliah harian/mingguan
+│   │   ├── setting.dart             # Layar Pengaturan, profil, tema, & cek update
+│   │   └── task.dart                # Layar Daftar tugas & progress bar
+│   └── widgets/
+│       ├── cards/
+│       │   ├── hero_card.dart       # Kartu hitung mundur jadwal kuliah terdekat
+│       │   ├── schedule_item.dart   # Kartu item jadwal (badge jenis, ruang, SKS)
+│       │   └── task_item.dart       # Kartu item tugas dengan checkbox
+│       ├── dialogs/
+│       │   ├── add_schedule_dialog.dart # Form tambah jadwal (streamlined layout)
+│       │   ├── add_task_dialog.dart     # Form tambah tugas kuliah
+│       │   ├── delete_confirm_dialog.dart # Dialog konfirmasi hapus data
+│       │   ├── edit_profile_dialog.dart # Dialog edit nama, bio, & avatar
+│       │   └── update_dialog.dart       # Dialog in-app download update & installer
+│       ├── filters/
+│       │   ├── filter.dart          # Filter chip kategori tugas
+│       │   └── filter_date.dart     # Filter chip tanggal mingguan
+│       └── sheets/
+│           ├── about_sheet.dart     # Modal informasi aplikasi & kredit
+│           ├── notification_config_sheet.dart # Modal konfigurasi alarm & suara
+│           └── theme_picker_sheet.dart  # Modal pemilih tema Light/Dark
 ├── services/
-│   └── notification_service.dart    # Konfigurasi & handler Flutter Local Notifications
-├── utils/
-│   ├── about_sheet.dart             # Modal bottom sheet 'Tentang TugasKu'
-│   ├── add_schedule_dialog.dart     # Dialog tambah/edit jadwal
-│   ├── add_task_dialog.dart         # Dialog tambah tugas
-│   ├── delete_confirm_dialog.dart   # Dialog konfirmasi hapus data
-│   ├── edit_profile_dialog.dart     # Dialog pengaturan profil & foto pengguna
-│   ├── filter.dart                  # Widget filter chip kategori & tanggal
-│   ├── hero.dart                    # Widget banner jadwal terdekat di Dashboard
-│   ├── notification_config_sheet.dart # Modal konfigurasi notifikasi
-│   ├── schedule_item.dart           # Komponen kartu jadwal
-│   ├── task_item.dart               # Komponen kartu tugas dengan checkbox
-│   └── theme_picker_sheet.dart      # Modal pemilih tema (Light/Dark)
-└── main.dart                        # Titik masuk aplikasi (Inisialisasi Hive & Notifikasi)
+│   ├── notification_service.dart    # Handler notifikasi lokal & alarm
+│   └── update_service.dart          # Service GitHub Releases API & APK downloader
+└── main.dart                        # Entry point aplikasi (Inisialisasi Hive & tema)
 ```
 
 ---
 
 ## 🛠️ Teknologi & Dependensi
 
-| Paket | Fungsi |
-|---|---|
-| **[flutter](https://flutter.dev/)** | Framework utama UI lintas platform |
-| **[hive](https://pub.dev/packages/hive)** & **[hive_flutter](https://pub.dev/packages/hive_flutter)** | Database NoSQL lokal super cepat & ringan |
-| **[google_fonts](https://pub.dev/packages/google_fonts)** | Tipografi modern (Poppins font family) |
-| **[flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications)** | Notifikasi push lokal tanpa server |
-| **[timezone](https://pub.dev/packages/timezone)** | Penanganan zona waktu akurat untuk alarm notifikasi |
-| **[image_picker](https://pub.dev/packages/image_picker)** | Memilih foto profil dari galeri / kamera |
-| **[file_picker](https://pub.dev/packages/file_picker)** | Mengambil & menyimpan file cadangan (backup JSON) |
-| **[url_launcher](https://pub.dev/packages/url_launcher)** | Membuka tautan eksternal (donasi & kredit) |
+| Paket | Versi | Fungsi |
+|---|---|---|
+| **[flutter](https://flutter.dev/)** | SDK | Framework UI multi-platform utama |
+| **[hive_flutter](https://pub.dev/packages/hive_flutter)** | `^1.1.0` | Database NoSQL lokal super cepat & reactive listenables |
+| **[flutter_svg](https://pub.dev/packages/flutter_svg)** | `^2.0.17` | Rendering aset vektor SVG maskot Lumut |
+| **[dio](https://pub.dev/packages/dio)** | `^5.7.0` | HTTP client & downloader APK dengan progress bar |
+| **[open_filex](https://pub.dev/packages/open_filex)** | `^4.5.0` | Memicu package installer Android untuk update otomatis |
+| **[package_info_plus](https://pub.dev/packages/package_info_plus)** | `^10.2.2` | Membaca versi aplikasi terpasang secara dinamis |
+| **[path_provider](https://pub.dev/packages/path_provider)** | `^2.1.5` | Mengakses direktori penyimpanan sementara untuk unduhan APK |
+| **[flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications)** | `^22.3.2` | Alarm & push notifications lokal tanpa server |
+| **[timezone](https://pub.dev/packages/timezone)** | `^0.11.2` | Penanganan zona waktu akurat untuk alarm kuliah & tugas |
+| **[image_picker](https://pub.dev/packages/image_picker)** | `^1.2.4` | Mengambil foto avatar dan banner profil |
+| **[file_picker](https://pub.dev/packages/file_picker)** | `^13.1.0` | Memilih nada dering kustom |
+| **[url_launcher](https://pub.dev/packages/url_launcher)** | `^6.3.3` | Membuka tautan GitHub & dukungan Trakteer |
+| **[google_fonts](https://pub.dev/packages/google_fonts)** | `^9.0.0` | Tipografi Google Fonts |
 
 ---
 
@@ -110,14 +144,14 @@ lib/
 - Flutter SDK (`^3.13.5` atau yang lebih baru)
 - Dart SDK
 - Android Studio / VS Code dengan ekstensi Flutter & Dart
-- Emulator Android / Perangkat fisik dengan USB Debugging aktif
+- Perangkat Android (OS 8.0+) / Emulator
 
 ### Langkah Instalasi
 
 1. **Clone repositori ini:**
    ```bash
    git clone https://github.com/inikumadayo/TugasKu.git
-   cd adistyclone
+   cd TugasKu
    ```
 
 2. **Unduh dependensi proyek:**
@@ -132,35 +166,29 @@ lib/
 
 ---
 
-## 📦 Build Aplikasi (Production)
+## 📦 Build Aplikasi (Production APK)
 
-Untuk membuat file installer Android (APK / App Bundle):
+Untuk membuat file installer Android (APK Release):
 
 ```bash
-# Membuat APK Release
 flutter build apk --release
-
-# Membuat Android App Bundle (AAB) untuk Play Store
-flutter build appbundle --release
 ```
 
-Hasil build APK dapat ditemukan di direktori `build/app/outputs/flutter-apk/app-release.apk`.
+Hasil file APK release dapat ditemukan di:
+`build/app/outputs/flutter-apk/app-release.apk`
 
 ---
 
-## 🤝 Kontribusi & Dukungan
+## 🤝 Dukungan & Pengembang
 
-Jika kamu menemukan *bug* atau ingin menyumbang fitur baru:
-1. Fork repositori ini
-2. Buat branch fitur baru (`git checkout -b fitur/fitur-keren`)
-3. Commit perubahanmu (`git commit -m 'Menambahkan fitur keren'`)
-4. Push ke branch (`git push origin fitur/fitur-keren`)
-5. Buat **Pull Request** baru
+Dibuat dengan ❤️ untuk membantu mahasiswa tetap terorganisir dan produktif.
 
-Sukai proyek ini? Dukung pengembang melalui [Trakteer](https://trakteer.id/kumadayo) ☕.
+- **Pengembang:** [Kumadayo](https://github.com/inikumadayo)
+- **Repositori:** [github.com/inikumadayo/TugasKu](https://github.com/inikumadayo/TugasKu)
+- **Dukungan Kopi:** [Trakteer Kumadayo](https://trakteer.id/kumadayo) ☕
 
 ---
 
 ## 📄 Lisensi
 
-Proyek ini dibuat untuk keperluan pembelajaran dan pengembangan aplikasi produktivitas mahasiswa. Dikembangkan oleh **Kumadayo**.
+Proyek ini bersifat open-source dan bebas digunakan untuk keperluan pembelajaran maupun produktivitas pribadi.

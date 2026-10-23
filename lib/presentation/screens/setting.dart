@@ -25,7 +25,7 @@ class _SettingState extends State<Setting> {
   late bool _pengingatTugas;
   late bool _notifikasiKuliah;
   bool _isCheckingUpdate = false;
-  String _currentAppVersion = '1.1.0';
+  String _currentAppVersion = '1.2.0';
 
   @override
   void initState() {

@@ -72,7 +72,7 @@ Future<void> showAboutSheet(BuildContext context) async {
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        'Versi 1.1.0',
+                        'Versi 1.2.0',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,

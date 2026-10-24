@@ -265,8 +265,16 @@ Future<bool> showEditProfileDialog(
                 final desc = descController.text.trim();
 
                 final newProfile = UserProfileModel(
-                  name: name.isNotEmpty ? name : 'Nurrahmat Eko Nugroho',
-                  description: desc.isNotEmpty ? desc : '2400018200',
+                  name: name.isNotEmpty
+                      ? name
+                      : (currentProfile.name.isNotEmpty
+                          ? currentProfile.name
+                          : 'Kuma dayo'),
+                  description: desc.isNotEmpty
+                      ? desc
+                      : (currentProfile.description.isNotEmpty
+                          ? currentProfile.description
+                          : 'Mahasiswa'),
                   profileImageBase64: profileImageBase64,
                   bannerImageBase64: bannerImageBase64,
                   isInitialized: true,

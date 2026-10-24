@@ -66,7 +66,6 @@ class _SettingState extends State<Setting> {
 
   @override
   Widget build(BuildContext context) {
-    final profile = DatabaseHelper.getUserProfile();
     final weeklySchedules = DatabaseHelper.getWeeklyScheduleCount();
     final activeTasks = DatabaseHelper.getActiveTaskCount();
     final completedTasks = DatabaseHelper.getCompletedTaskCount();
@@ -113,7 +112,12 @@ class _SettingState extends State<Setting> {
                     // ============================
                     // Profile Card
                     // ============================
-                    _buildProfileCard(profile),
+                    ValueListenableBuilder(
+                      valueListenable: DatabaseHelper.profileListenable(),
+                      builder: (context, box, child) => _buildProfileCard(
+                        DatabaseHelper.getUserProfile(),
+                      ),
+                    ),
                     const SizedBox(height: 16),
 
                     // ============================
@@ -191,44 +195,49 @@ class _SettingState extends State<Setting> {
                 // Avatar
                 Positioned(
                   bottom: -45,
-                  child: Container(
-                    width: 90,
-                    height: 90,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ColorsTheme.latarKomponen,
-                      border: Border.all(
+                  child: GestureDetector(
+                    onTap: () async {
+                      await showEditProfileDialog(context);
+                    },
+                    child: Container(
+                      width: 90,
+                      height: 90,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
                         color: ColorsTheme.latarKomponen,
-                        width: 4,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.12),
-                          blurRadius: 8,
-                          offset: const Offset(0, 3),
+                        border: Border.all(
+                          color: ColorsTheme.latarKomponen,
+                          width: 4,
                         ),
-                      ],
-                    ),
-                    child: ClipOval(
-                      child: profile.profileImageBase64 != null
-                          ? Image.memory(
-                              base64Decode(profile.profileImageBase64!),
-                              width: 90,
-                              height: 90,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(
-                              color: ColorsTheme.kartuUtama.withValues(
-                                alpha: 0.15,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.12),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ClipOval(
+                        child: profile.profileImageBase64 != null
+                            ? Image.memory(
+                                base64Decode(profile.profileImageBase64!),
+                                width: 90,
+                                height: 90,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
+                                color: ColorsTheme.kartuUtama.withValues(
+                                  alpha: 0.15,
+                                ),
+                                padding: const EdgeInsets.all(8),
+                                child: SvgPicture.asset(
+                                  MascotAssets.lofi,
+                                  width: 70,
+                                  height: 70,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                              padding: const EdgeInsets.all(8),
-                              child: SvgPicture.asset(
-                                MascotAssets.lofi,
-                                width: 70,
-                                height: 70,
-                                fit: BoxFit.contain,
-                              ),
-                            ),
+                      ),
                     ),
                   ),
                 ),

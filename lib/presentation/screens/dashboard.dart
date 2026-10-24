@@ -48,7 +48,6 @@ class _DashboardState extends State<Dashboard> {
     return ValueListenableBuilder(
       valueListenable: DatabaseHelper.tasksListenable(),
       builder: (context, box, child) {
-        final profile = DatabaseHelper.getUserProfile();
         final incompleteTasks = DatabaseHelper.getIncompleteTasks();
 
         return Scaffold(
@@ -61,89 +60,95 @@ class _DashboardState extends State<Dashboard> {
                   const SizedBox(height: 20),
 
                   // Header Profil
-                  GestureDetector(
-                    onTap: () async {
-                      final updated = await showEditProfileDialog(context);
-                      if (updated && mounted) setState(() {});
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 54,
-                          height: 54,
-                          decoration: BoxDecoration(
-                            color: ColorsTheme.latarKomponen,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: ColorsTheme.teksSekunder.withValues(
-                                alpha: 0.15,
-                              ),
-                              width: 1,
-                            ),
-                          ),
-                          child: ClipOval(
-                            child: Builder(
-                              builder: (context) {
-                                final imageBytes = ImageHelper.bytesFromBase64(
-                                  profile.profileImageBase64,
-                                );
-                                if (imageBytes != null) {
-                                  return Image.memory(
-                                    imageBytes,
-                                    width: 54,
-                                    height: 54,
-                                    fit: BoxFit.cover,
-                                  );
-                                }
-                                return Container(
-                                  padding: const EdgeInsets.all(4),
-                                  child: SvgPicture.asset(
-                                    MascotAssets.lofi,
-                                    width: 44,
-                                    height: 44,
-                                    fit: BoxFit.contain,
+                  ValueListenableBuilder(
+                    valueListenable: DatabaseHelper.profileListenable(),
+                    builder: (context, box, child) {
+                      final profile = DatabaseHelper.getUserProfile();
+                      return GestureDetector(
+                        onTap: () async {
+                          final updated = await showEditProfileDialog(context);
+                          if (updated && mounted) setState(() {});
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 54,
+                              height: 54,
+                              decoration: BoxDecoration(
+                                color: ColorsTheme.latarKomponen,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: ColorsTheme.teksSekunder.withValues(
+                                    alpha: 0.15,
                                   ),
-                                );
-                              },
+                                  width: 1,
+                                ),
+                              ),
+                              child: ClipOval(
+                                child: Builder(
+                                  builder: (context) {
+                                    final imageBytes = ImageHelper.bytesFromBase64(
+                                      profile.profileImageBase64,
+                                    );
+                                    if (imageBytes != null) {
+                                      return Image.memory(
+                                        imageBytes,
+                                        width: 54,
+                                        height: 54,
+                                        fit: BoxFit.cover,
+                                      );
+                                    }
+                                    return Container(
+                                      padding: const EdgeInsets.all(4),
+                                      child: SvgPicture.asset(
+                                        MascotAssets.lofi,
+                                        width: 44,
+                                        height: 44,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                profile.name,
-                                style: TextStyle(
-                                  color: ColorsTheme.teks,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    profile.name,
+                                    style: TextStyle(
+                                      color: ColorsTheme.teks,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    profile.description,
+                                    style: TextStyle(
+                                      color: ColorsTheme.teksSekunder,
+                                      fontSize: 13,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 2),
-                              Text(
-                                profile.description,
-                                style: TextStyle(
-                                  color: ColorsTheme.teksSekunder,
-                                  fontSize: 13,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(width: 8),
+                            SvgPicture.asset(
+                              MascotAssets.melambai,
+                              height: 46,
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 8),
-                        SvgPicture.asset(
-                          MascotAssets.melambai,
-                          height: 46,
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
 
                   const SizedBox(height: 22),

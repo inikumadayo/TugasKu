@@ -198,6 +198,9 @@ class DatabaseHelper {
   /// Mendapatkan box user profile
   static Box get _profile => Hive.box(_profileBox);
 
+  /// Listenable untuk reaktivitas perubahan box user profile
+  static ValueListenable<Box> profileListenable() => _profile.listenable();
+
   /// Ambil data profil pengguna
   static UserProfileModel getUserProfile() {
     final data = _profile.get('profile');

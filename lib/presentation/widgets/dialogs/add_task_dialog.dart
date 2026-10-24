@@ -28,6 +28,7 @@ class _AddTaskSheet extends StatefulWidget {
 class _AddTaskSheetState extends State<_AddTaskSheet> {
   late final TextEditingController _titleController;
   late final TextEditingController _descController;
+  late final TextEditingController _notesController;
   DateTime? _selectedDeadline;
 
   @override
@@ -35,12 +36,14 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
     super.initState();
     _titleController = TextEditingController();
     _descController = TextEditingController();
+    _notesController = TextEditingController();
   }
 
   @override
   void dispose() {
     _titleController.dispose();
     _descController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -73,14 +76,17 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
   }
 
   Future<void> _handleSave() async {
-    if (_titleController.text.isEmpty) return;
+    final title = _titleController.text.trim();
+    if (title.isEmpty) return;
 
+    final notes = _notesController.text.trim();
     final task = TaskModel(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
-      title: _titleController.text,
-      description: _descController.text.isEmpty
-          ? 'Tanpa deskripsi'
-          : _descController.text,
+      title: title,
+      description: _descController.text.trim().isEmpty
+          ? 'Umum'
+          : _descController.text.trim(),
+      notes: notes.isNotEmpty ? notes : null,
       deadline: _selectedDeadline,
     );
 
@@ -139,12 +145,21 @@ class _AddTaskSheetState extends State<_AddTaskSheet> {
                 ),
                 const SizedBox(height: 20),
 
-                // Deskripsi / Mata Kuliah
-                _buildLabel('Deskripsi / Mata Kuliah'),
+                // Mata Kuliah
+                _buildLabel('Mata Kuliah'),
                 const SizedBox(height: 8),
                 _buildInputField(
                   controller: _descController,
-                  hint: 'Pemrograman Mobile',
+                  hint: 'Contoh: Pemrograman Mobile',
+                ),
+                const SizedBox(height: 20),
+
+                // Catatan / Detail Tugas (opsional)
+                _buildLabel('Catatan / Instruksi Tugas (opsional)'),
+                const SizedBox(height: 8),
+                _buildInputField(
+                  controller: _notesController,
+                  hint: 'Format PDF, upload di GClassroom, maks 10MB...',
                   maxLines: 3,
                 ),
                 const SizedBox(height: 20),

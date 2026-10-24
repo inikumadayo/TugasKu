@@ -6,7 +6,9 @@ class TaskItem extends StatelessWidget {
   final String tugasapa;
   final bool isCompleted;
   final String sisaWaktu;
+  final bool hasNotes;
   final Function(bool?)? onChanged;
+  final VoidCallback? onTap;
   final VoidCallback? onDelete;
 
   const TaskItem({
@@ -16,6 +18,8 @@ class TaskItem extends StatelessWidget {
     required this.isCompleted,
     required this.onChanged,
     this.sisaWaktu = '',
+    this.hasNotes = false,
+    this.onTap,
     this.onDelete,
   });
 
@@ -54,7 +58,9 @@ class TaskItem extends StatelessWidget {
     }
 
     return GestureDetector(
+      onTap: onTap,
       onLongPress: onDelete,
+      behavior: HitTestBehavior.opaque,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         margin: const EdgeInsets.symmetric(vertical: 6),
@@ -116,14 +122,28 @@ class TaskItem extends StatelessWidget {
                     maxLines: 1,
                   ),
                   const SizedBox(height: 3),
-                  Text(
-                    tugasapa,
-                    style: TextStyle(
-                      color: ColorsTheme.teksSekunder,
-                      fontSize: 12,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                  Row(
+                    children: [
+                      if (hasNotes) ...[
+                        Icon(
+                          Icons.sticky_note_2_outlined,
+                          size: 13,
+                          color: ColorsTheme.aksen,
+                        ),
+                        const SizedBox(width: 4),
+                      ],
+                      Expanded(
+                        child: Text(
+                          tugasapa,
+                          style: TextStyle(
+                            color: ColorsTheme.teksSekunder,
+                            fontSize: 12,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

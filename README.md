@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white" alt="Dart" />
   <img src="https://img.shields.io/badge/Hive-Local%20DB-FDB913?style=for-the-badge" alt="Hive" />
   <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Web-blue?style=for-the-badge" alt="Platform" />
-  <img src="https://img.shields.io/badge/Version-1.2.0-brightgreen?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-1.3.0-brightgreen?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/badge/Theme-Rainy%20Garden%20%26%20Matcha-2E3A42?style=for-the-badge" alt="Theme" />
 </p>
 
@@ -34,21 +34,24 @@ Dibangun secara *offline-first* menggunakan **Flutter** dan database lokal **Hiv
 - **Form Tambah Jadwal Ringkas:** Form bottom-sheet yang dikelompokkan secara logis dan hemat ruang (input Ruang & SKS berdampingan).
 
 ### 3. ✅ Pengelola & Pelacak Tugas (Task Manager)
+- **Detail & Edit Tugas Interaktif:** Ketuk kartu tugas kapan saja untuk melihat detail instruksi lengkap, mengedit judul, mata kuliah, catatan tugas, mengubah deadline, hingga menandai status selesai.
+- **Catatan & Instruksi Tugas Lengkap (Notes):** Kolom catatan multiline opsional untuk instruksi khusus dosen, format tugas, atau link pengumpulan, disertai indikator ikon catatan pada kartu tugas.
 - **Filter Kategori:** Tinjau tugas berdasarkan *Semua*, *Belum Selesai*, dan *Selesai*.
 - **Progress Bar Mingguan:** Indikator visual progres penyelesaian tugas minggu berjalan secara dinamis.
 - **Pembersihan Otomatis (Auto-Cleanup):** Tugas yang sudah lewat deadline minggu sebelumnya dibersihkan secara otomatis setiap awal pekan (Senin).
 - **Celebration State:** Saat seluruh tugas selesai, Lumut merayakan keberhasilanmu dengan animasi selebrasi.
 
-### 4. 🌿 Maskot Interaktif "Lumut"
-Aplikasi diperkaya dengan 11 pose ilustrasi SVG maskot **Lumut** yang dirancang selaras dengan tema aplikasi:
-- 🎒 `lumut_berangkat` — Siap berangkat menyambut perkuliahan & update baru.
-- 🍵 `lumut_matcha` — Santai menikmati matcha saat semua kuliah telah selesai.
-- 📖 `lumut_tidur` — Tidur di atas buku saat hari libur / tidak ada jadwal.
-- 🎉 `lumut_selesai` — Merayakan seluruh tugas yang berhasil diselesaikan.
-- 👋 `lumut_melambai` — Menyapa ramah di header dashboard.
-- 🎧 `lumut_lofi` — Mendengarkan musik lofi (avatar default pengguna).
-- 🍃 `lumut_payung` — Berpayung daun ikonik khas nuansa *Rainy Garden*.
-- 💻 `lumut_mengetik` & 📚 `lumut_belajar` — Fokus mengerjakan tugas & belajar.
+### 4. 🌿 Gamifikasi & Maskot Interaktif "Lumut"
+Aplikasi diperkaya dengan 11 pose ilustrasi SVG maskot **Lumut** yang hidup dan adaptif:
+- 🕒 **Maskot Waktu Dinamis (Header):** Maskot di header beranda berganti ekspresi mengikuti waktu (Pagi: siap kuliah `lumut_berangkat`, Siang: `lumut_belajar`, Sore: `lumut_matcha`, Malam: `lumut_mengetik`, Larut Malam: `lumut_mengantuk`).
+- 💬 **Interaktif Sapaan & Quote Motivasi:** Ketuk maskot di header kapan saja untuk mendapatkan sapaan ramah dan pesan motivasi acak dari Lumut.
+- 🎉 **Task Celebration System:**
+  - Tiap mencentang tugas selesai, muncul floating cheer snackbar dengan pesan apresiasi dan animasi maskot.
+  - Saat **semua tugas tuntas**, dialog perayaan spesial muncul mengapresiasi kerja kerasmu!
+- 🐱 **Empty States Tematik:**
+  - Hari Sabtu & Minggu libur: Lumut santai bermain bersama kucing (`lumut_kucing`).
+  - Semua tugas selesai: Lumut menikmati matcha hangat (`lumut_matcha`).
+  - Belum ada tugas selesai: Lumut fokus mengetik (`lumut_mengetik`).
 
 ### 5. 🚀 In-App GitHub Auto-Update & Installer
 - **Pengecekan Otomatis (Silent Check):** Aplikasi otomatis mengecek rilis terbaru dari repositori GitHub [`inikumadayo/TugasKu`](https://github.com/inikumadayo/TugasKu) saat pertama kali dibuka.
@@ -176,6 +179,23 @@ flutter build apk --release
 
 Hasil file APK release dapat ditemukan di:
 `build/app/outputs/flutter-apk/app-release.apk`
+
+---
+
+## 📜 Riwayat Versi (Changelog)
+
+### v1.3.0
+- 📝 **Detail & Edit Tugas Interaktif (Task Detail Dialog):**
+  - Ketuk kartu tugas di Beranda atau tab Tugas untuk membuka dialog detail & editor tugas.
+  - Penambahan kolom `notes` (Catatan / Instruksi Detail) opsional untuk mencatat instruksi spesifik dosen/link pengumpulan.
+  - Kartu tugas menampilkan indikator ikon catatan jika tugas memiliki detail tambahan.
+  - Form tambah tugas (`add_task_dialog.dart`) kini juga mendukung input catatan tugas sejak awal.
+- 🌿 **Gamifikasi & Maskot Interaktif "Lumut":**
+  - Maskot header dinamis mengikuti waktu hari (Pagi, Siang, Sore, Malam, Larut Malam).
+  - Ketuk maskot untuk membuka dialog sapaan dan kutipan motivasi belajar dari Lumut.
+  - Sistem perayaan tugas: floating cheer notification saat tugas diselesaikan, dan dialog selebrasi akbar saat seluruh tugas tuntas.
+  - Empty state tematik: ilustrasi kucing di akhir pekan dan matcha saat semua tugas beres.
+- ⚡ **Peningkatan Reaktivitas Edit Profil:** Edit profil kini 100% reaktif secara instan di seluruh layar via `DatabaseHelper.profileListenable()`.
 
 ---
 

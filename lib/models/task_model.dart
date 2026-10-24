@@ -5,6 +5,7 @@ class TaskModel {
   final String id;
   final String title;
   final String description;
+  final String? notes;
   final bool isCompleted;
   final DateTime? deadline;
   final DateTime createdAt;
@@ -13,6 +14,7 @@ class TaskModel {
     required this.id,
     required this.title,
     required this.description,
+    this.notes,
     this.isCompleted = false,
     this.deadline,
     DateTime? createdAt,
@@ -22,6 +24,7 @@ class TaskModel {
     String? id,
     String? title,
     String? description,
+    String? notes,
     bool? isCompleted,
     DateTime? deadline,
     DateTime? createdAt,
@@ -30,6 +33,7 @@ class TaskModel {
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
+      notes: notes ?? this.notes,
       isCompleted: isCompleted ?? this.isCompleted,
       deadline: deadline ?? this.deadline,
       createdAt: createdAt ?? this.createdAt,
@@ -42,6 +46,7 @@ class TaskModel {
       'id': id,
       'title': title,
       'description': description,
+      'notes': notes,
       'isCompleted': isCompleted,
       'deadline': deadline?.toIso8601String(),
       'createdAt': createdAt.toIso8601String(),
@@ -54,6 +59,7 @@ class TaskModel {
       id: map['id'] as String,
       title: map['title'] as String,
       description: map['description'] as String,
+      notes: map['notes'] as String?,
       isCompleted: map['isCompleted'] as bool? ?? false,
       deadline: map['deadline'] != null
           ? DateTime.parse(map['deadline'] as String)

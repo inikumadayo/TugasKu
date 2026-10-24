@@ -1,11 +1,14 @@
 import 'package:adistyclone/core/constants/mascot_assets.dart';
 import 'package:adistyclone/core/utils/image_helper.dart';
+import 'package:adistyclone/core/utils/mascot_helper.dart';
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/services/update_service.dart';
 import 'package:adistyclone/presentation/widgets/cards/hero_card.dart';
 import 'package:adistyclone/presentation/widgets/cards/task_item.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/edit_profile_dialog.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/mascot_dialog.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/task_detail_dialog.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/update_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,6 +44,13 @@ class _DashboardState extends State<Dashboard> {
 
   void checkBoxChanged(bool? value, String taskId) async {
     await DatabaseHelper.toggleTaskCompletion(taskId);
+    if (value == true && mounted) {
+      final incompleteCount = DatabaseHelper.getIncompleteTasks().length;
+      MascotHelper.showTaskCelebration(
+        context,
+        isAllCompleted: incompleteCount == 0,
+      );
+    }
   }
 
   @override
@@ -141,9 +151,15 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                             const SizedBox(width: 8),
-                            SvgPicture.asset(
-                              MascotAssets.melambai,
-                              height: 46,
+                            GestureDetector(
+                              onTap: () => showMascotGreetingDialog(context),
+                              child: Tooltip(
+                                message: 'Ketuk untuk menyapa Lumut!',
+                                child: SvgPicture.asset(
+                                  MascotHelper.getTimeBasedMascot(),
+                                  height: 48,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -190,16 +206,24 @@ class _DashboardState extends State<Dashboard> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SvgPicture.asset(
-                                  MascotAssets.selesai,
-                                  height: 80,
+                                  MascotAssets.matcha,
+                                  height: 85,
                                 ),
                                 const SizedBox(height: 12),
                                 Text(
                                   'Semua tugas sudah selesai! 🎉',
                                   style: TextStyle(
+                                    color: ColorsTheme.teks,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Waktunya bersantai dan recharge energimu 🍵',
+                                  style: TextStyle(
                                     color: ColorsTheme.teksSekunder,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: 13,
                                   ),
                                 ),
                               ],
@@ -215,6 +239,8 @@ class _DashboardState extends State<Dashboard> {
                                 tugasapa: task.description,
                                 isCompleted: task.isCompleted,
                                 sisaWaktu: task.sisaWaktu,
+                                hasNotes: task.notes != null && task.notes!.isNotEmpty,
+                                onTap: () => showTaskDetailDialog(context, task: task),
                                 onChanged: (value) {
                                   checkBoxChanged(value, task.id);
                                 },

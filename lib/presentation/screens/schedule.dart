@@ -198,16 +198,32 @@ class _ScheduleState extends State<Schedule> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             SvgPicture.asset(
-                              MascotAssets.tidur,
+                              (_selectedHari == 6 || _selectedHari == 7)
+                                  ? MascotAssets.kucing
+                                  : MascotAssets.tidur,
                               height: 90,
                             ),
                             const SizedBox(height: 14),
                             Text(
-                              'Tidak ada jadwal hari ${_getNamaHari(_selectedHari)}',
+                              (_selectedHari == 6 || _selectedHari == 7)
+                                  ? 'Hari ${_getNamaHari(_selectedHari)} libur kuliah! 🐱'
+                                  : 'Tidak ada jadwal hari ${_getNamaHari(_selectedHari)}',
+                              style: TextStyle(
+                                color: ColorsTheme.teks,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              (_selectedHari == 6 || _selectedHari == 7)
+                                  ? 'Waktunya istirahat atau main bareng kucing~'
+                                  : 'Nikmati waktu luang atau belajar mandiri ya 🌿',
                               style: TextStyle(
                                 color: ColorsTheme.teksSekunder,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),

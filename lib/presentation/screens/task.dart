@@ -1,11 +1,13 @@
 import 'package:adistyclone/core/constants/mascot_assets.dart';
 import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/core/utils/date_time_helper.dart';
+import 'package:adistyclone/core/utils/mascot_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/task_model.dart';
 import 'package:adistyclone/presentation/widgets/cards/task_item.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/add_task_dialog.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/delete_confirm_dialog.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/task_detail_dialog.dart';
 import 'package:adistyclone/presentation/widgets/filters/filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -67,6 +69,13 @@ class _TaskState extends State<Task> {
 
   void checkBoxChanged(bool? value, String taskId) async {
     await DatabaseHelper.toggleTaskCompletion(taskId);
+    if (value == true && mounted) {
+      final incompleteCount = DatabaseHelper.getIncompleteTasks().length;
+      MascotHelper.showTaskCelebration(
+        context,
+        isAllCompleted: incompleteCount == 0,
+      );
+    }
   }
 
   /// Tampilkan dialog untuk menambah tugas baru
@@ -225,22 +234,54 @@ class _TaskState extends State<Task> {
                 Expanded(
                   child: currentTasks.isEmpty
                       ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                MascotAssets.selesai,
-                                height: 96,
-                              ),
-                              const SizedBox(height: 14),
-                              Text(
-                                'Tidak ada tugas',
-                                style: TextStyle(
-                                  color: ColorsTheme.teksSekunder,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
+                          child: Builder(
+                            builder: (context) {
+                              String asset = MascotAssets.tidur;
+                              String title = 'Belum ada tugas';
+                              String subtitle =
+                                  'Tekan tombol + di atas untuk menambah tugas baru';
+
+                              if (_activeFilter == 'Belum Selesai') {
+                                asset = MascotAssets.matcha;
+                                title = 'Semua tugas sudah selesai! 🎉';
+                                subtitle =
+                                    'Waktunya santai sejenak dan recharge energimu 🍵';
+                              } else if (_activeFilter == 'Selesai') {
+                                asset = MascotAssets.mengetik;
+                                title = 'Belum ada tugas yang selesai';
+                                subtitle =
+                                    'Yuk mulai kerjakan tugasmu satu per satu!';
+                              }
+
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    asset,
+                                    height: 96,
+                                  ),
+                                  const SizedBox(height: 14),
+                                  Text(
+                                    title,
+                                    style: TextStyle(
+                                      color: ColorsTheme.teks,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    subtitle,
+                                    style: TextStyle(
+                                      color: ColorsTheme.teksSekunder,
+                                      fontSize: 13,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         )
                       : ListView.builder(
@@ -252,6 +293,8 @@ class _TaskState extends State<Task> {
                               tugasapa: task.description,
                               isCompleted: task.isCompleted,
                               sisaWaktu: task.sisaWaktu,
+                              hasNotes: task.notes != null && task.notes!.isNotEmpty,
+                              onTap: () => showTaskDetailDialog(context, task: task),
                               onChanged: (value) {
                                 checkBoxChanged(value, task.id);
                               },

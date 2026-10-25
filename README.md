@@ -22,20 +22,24 @@ Dibangun secara *offline-first* menggunakan **Flutter** dan database lokal **Hiv
 ## ✨ Fitur Utama
 
 ### 1. 🏠 Dashboard Pintar
-- **Hero Countdown Card:** Menampilkan jadwal kuliah terdekat secara *real-time* dengan hitung mundur dinamis (misal: *"dalam 30 Menit"* atau *"Sedang berlangsung"*), lengkap dengan badge jam, ruangan, jumlah SKS, dan nama dosen pengampu.
+- **Hero Countdown Card:** Menampilkan jadwal kuliah terdekat secara *real-time* dengan hitung mundur dinamis (misal: *"dalam 30 Menit"* atau *"Sedang berlangsung"*), lengkap dengan badge jam, ruangan, jumlah SKS, dan nama dosen pengampu. Kartu dapat diketuk untuk langsung beralih ke halaman Jadwal.
 - **Sapaan Maskot Lumut:** Maskot Lumut yang melambai menyapa di header profil pengguna.
 - **Tinjauan Tugas Mendesak:** Menampilkan daftar tugas yang belum tuntas, dengan kemampuan menyelesaikan tugas langsung lewat centang di beranda.
 - **State Selesai Menenangkan:** Saat semua kuliah hari ini tuntas, kartu hero bertransformasi menampilkan Lumut yang sedang santai menikmati matcha.
 
 ### 2. 📅 Jadwal Kuliah Mingguan
+- **Detail & Edit Jadwal Interaktif:** Ketuk kartu jadwal pada tab Jadwal untuk melihat detail dan mengedit jadwal perkuliahan secara instan.
 - **Filter Hari Interaktif:** Navigasi cepat antara hari Senin hingga Sabtu dengan chip tanggal mingguan dinamis.
 - **Informasi Akademik Lengkap:** Menampilkan mata kuliah, nama dosen pengampu, badge jenis (Teori/Praktikum/Asprak), badge ruangan, dan badge SKS.
 - **Indikator Kelas Aktif:** Penanda visual highlight otomatis pada sesi kuliah yang sedang berlangsung.
 - **Form Tambah Jadwal Ringkas:** Form bottom-sheet yang dikelompokkan secara logis dan hemat ruang (input Ruang & SKS berdampingan).
 
-### 3. ✅ Pengelola & Pelacak Tugas (Task Manager)
-- **Detail & Edit Tugas Interaktif:** Ketuk kartu tugas kapan saja untuk melihat detail instruksi lengkap, mengedit judul, mata kuliah, catatan tugas, mengubah deadline, hingga menandai status selesai.
-- **Catatan & Instruksi Tugas Lengkap (Notes):** Kolom catatan multiline opsional untuk instruksi khusus dosen, format tugas, atau link pengumpulan, disertai indikator ikon catatan pada kartu tugas.
+### 3. ✅ Pengelola & Pelacak Tugas (Task Manager Bergaya Google Keep)
+- **Detail & Editor Catatan Bergaya Google Keep:** Ketuk kartu tugas kapan saja untuk membuka layar catatan lengkap bergaya Google Keep Notes:
+  - **Area Tulis Catatan Bersih (Borderless):** Judul dan area catatan luas tanpa garis tepi (*seamless*) untuk kenyamanan menulis instruksi atau detail tugas.
+  - **Pill Chips Interaktif:** Chip rounded untuk Mata Kuliah (kategori) dan Deadline waktu (pemilih tanggal & jam).
+  - **Penyimpanan Otomatis (Auto-Save):** Perubahan disimpan otomatis saat mengetik dengan indikator *"Tersimpan otomatis"*.
+  - **Fitur Undo & Redo:** Memulihkan atau mengulang kembali teks judul dan catatan yang diketik.
 - **Filter Kategori:** Tinjau tugas berdasarkan *Semua*, *Belum Selesai*, dan *Selesai*.
 - **Progress Bar Mingguan:** Indikator visual progres penyelesaian tugas minggu berjalan secara dinamis.
 - **Pembersihan Otomatis (Auto-Cleanup):** Tugas yang sudah lewat deadline minggu sebelumnya dibersihkan secara otomatis setiap awal pekan (Senin).
@@ -185,6 +189,9 @@ Hasil file APK release dapat ditemukan di:
 ## 📜 Riwayat Versi (Changelog)
 
 ### v1.3.0
+- 📅 **Detail & Edit Jadwal Interaktif (Schedule Detail Dialog):**
+  - Ketuk kartu jadwal di tab Jadwal untuk melihat dan mengedit mata kuliah, dosen, hari, jam, ruang, serta SKS secara instan.
+  - Kartu Hero di Beranda kini dapat diketuk untuk navigasi cepat langsung ke halaman Jadwal.
 - 📝 **Detail & Edit Tugas Interaktif (Task Detail Dialog):**
   - Ketuk kartu tugas di Beranda atau tab Tugas untuk membuka dialog detail & editor tugas.
   - Penambahan kolom `notes` (Catatan / Instruksi Detail) opsional untuk mencatat instruksi spesifik dosen/link pengumpulan.

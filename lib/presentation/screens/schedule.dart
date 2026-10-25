@@ -6,6 +6,7 @@ import 'package:adistyclone/models/schedule_model.dart';
 import 'package:adistyclone/presentation/widgets/cards/schedule_item.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/add_schedule_dialog.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/delete_confirm_dialog.dart';
+import 'package:adistyclone/presentation/widgets/dialogs/schedule_detail_dialog.dart';
 import 'package:adistyclone/presentation/widgets/filters/filter_date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -235,6 +236,15 @@ class _ScheduleState extends State<Schedule> {
                           return ScheduleItem(
                             schedule: schedule,
                             isOn: schedule.id == activeScheduleId,
+                            onTap: () async {
+                              final updated = await showScheduleDetailDialog(
+                                context,
+                                schedule: schedule,
+                              );
+                              if (updated && mounted) {
+                                _loadSchedules();
+                              }
+                            },
                             onDelete: () =>
                                 _confirmDeleteSchedule(_schedules[index]),
                           );

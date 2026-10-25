@@ -3,6 +3,7 @@ import 'package:adistyclone/core/theme/colors.dart';
 import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/schedule_model.dart';
+import 'package:adistyclone/presentation/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -74,13 +75,16 @@ class _HeroDashState extends State<HeroDash> {
   @override
   Widget build(BuildContext context) {
     if (_nextSchedule == null) {
-      return Container(
-        height: 200,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: ColorsTheme.kartuUtama,
-          borderRadius: BorderRadius.circular(30),
-        ),
+      return GestureDetector(
+        onTap: () => Homepage.switchTab(1),
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          height: 200,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: ColorsTheme.kartuUtama,
+            borderRadius: BorderRadius.circular(30),
+          ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -115,8 +119,9 @@ class _HeroDashState extends State<HeroDash> {
             ],
           ),
         ),
-      );
-    }
+      ),
+    );
+  }
 
     final pillBg = ColorsTheme.teksDiKartu.withValues(alpha: 0.18);
     final badgeLabel = _nextSchedule!.jenis.isNotEmpty
@@ -126,13 +131,16 @@ class _HeroDashState extends State<HeroDash> {
         ? _nextSchedule!.ruang
         : 'Ruang ${_nextSchedule!.ruang}';
 
-    return Container(
-      height: 200,
-      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
-      decoration: BoxDecoration(
-        color: ColorsTheme.kartuUtama,
-        borderRadius: BorderRadius.circular(30),
-      ),
+    return GestureDetector(
+      onTap: () => Homepage.switchTab(1),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        height: 200,
+        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 20),
+        decoration: BoxDecoration(
+          color: ColorsTheme.kartuUtama,
+          borderRadius: BorderRadius.circular(30),
+        ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,6 +283,7 @@ class _HeroDashState extends State<HeroDash> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

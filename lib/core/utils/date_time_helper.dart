@@ -134,6 +134,32 @@ class DateTimeHelper {
     return 'Segera';
   }
 
+  /// Format deadline untuk chip gaya Google Keep (contoh: "Besok • 23.59", "Hari ini • 14.00")
+  static String formatDeadlineKeep(DateTime? deadline) {
+    if (deadline == null) return 'Atur deadline';
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final targetDate = DateTime(deadline.year, deadline.month, deadline.day);
+    final diffDays = targetDate.difference(today).inDays;
+    final timeStr =
+        '${deadline.hour.toString().padLeft(2, '0')}.${deadline.minute.toString().padLeft(2, '0')}';
+
+    if (diffDays == 0) {
+      return 'Hari ini • $timeStr';
+    } else if (diffDays == 1) {
+      return 'Besok • $timeStr';
+    } else if (diffDays == -1) {
+      return 'Kemarin • $timeStr';
+    } else if (diffDays > 1 && diffDays < 7) {
+      return '${getNamaHari(deadline.weekday)} • $timeStr';
+    } else {
+      final bulanSingkat = namaBulan[deadline.month].length >= 3
+          ? namaBulan[deadline.month].substring(0, 3)
+          : namaBulan[deadline.month];
+      return '${deadline.day} $bulanSingkat • $timeStr';
+    }
+  }
+
   /// Hitung estimasi waktu countdown hingga jadwal mulai hari ini (format "HH:mm")
   static String getTimeUntilSchedule(String waktuMulai) {
     final parts = waktuMulai.split(':');

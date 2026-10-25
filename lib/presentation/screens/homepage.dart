@@ -11,6 +11,14 @@ import 'package:flutter/material.dart';
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
+  /// Notifier indeks tab aktif (0=Beranda, 1=Jadwal, 2=Tugas, 3=Profil)
+  static final ValueNotifier<int> activeTabNotifier = ValueNotifier<int>(0);
+
+  /// Berpindah ke tab tertentu secara programatik
+  static void switchTab(int index) {
+    activeTabNotifier.value = index;
+  }
+
   @override
   State<Homepage> createState() => _HomepageState();
 }
@@ -21,6 +29,7 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
+    Homepage.activeTabNotifier.addListener(_onTabChanged);
     DateTimeHelper.startHeartbeat();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkFirstTimeProfile();
@@ -29,8 +38,17 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void dispose() {
+    Homepage.activeTabNotifier.removeListener(_onTabChanged);
     DateTimeHelper.stopHeartbeat();
     super.dispose();
+  }
+
+  void _onTabChanged() {
+    if (mounted && _selectedIndex != Homepage.activeTabNotifier.value) {
+      setState(() {
+        _selectedIndex = Homepage.activeTabNotifier.value;
+      });
+    }
   }
 
   void _checkFirstTimeProfile() async {
@@ -119,9 +137,7 @@ class _HomepageState extends State<Homepage> {
 
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _selectedIndex = index;
-        });
+        Homepage.switchTab(index);
       },
       behavior: HitTestBehavior.opaque,
       child: SizedBox(

@@ -5,27 +5,36 @@ import 'package:adistyclone/models/schedule_model.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/delete_confirm_dialog.dart';
 import 'package:flutter/material.dart';
 
-/// Menampilkan bottom sheet detail dan edit jadwal perkuliahan.
+/// Menampilkan bottom sheet detail atau tambah jadwal perkuliahan.
 ///
-/// Mengembalikan `true` jika jadwal berhasil diperbarui atau dihapus.
+/// Jika [schedule] bernilai `null`, dialog akan membuka form kosong untuk menambah jadwal baru.
+/// Mengembalikan `true` jika jadwal berhasil ditambahkan, diperbarui, atau dihapus.
 Future<bool> showScheduleDetailDialog(
   BuildContext context, {
-  required ScheduleModel schedule,
+  ScheduleModel? schedule,
+  int? defaultHari,
 }) async {
   final result = await showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
     backgroundColor: Colors.transparent,
-    builder: (context) => _ScheduleDetailSheet(schedule: schedule),
+    builder: (context) => _ScheduleDetailSheet(
+      schedule: schedule,
+      defaultHari: defaultHari,
+    ),
   );
 
   return result ?? false;
 }
 
 class _ScheduleDetailSheet extends StatefulWidget {
-  final ScheduleModel schedule;
+  final ScheduleModel? schedule;
+  final int? defaultHari;
 
-  const _ScheduleDetailSheet({required this.schedule});
+  const _ScheduleDetailSheet({
+    this.schedule,
+    this.defaultHari,
+  });
 
   @override
   State<_ScheduleDetailSheet> createState() => _ScheduleDetailSheetState();
@@ -41,6 +50,8 @@ class _ScheduleDetailSheetState extends State<_ScheduleDetailSheet> {
   late String _selectedJenis;
   late int _selectedHari;
 
+  bool get _isNew => widget.schedule == null;
+
   static const List<String> _jenisOptions = [
     'Mata Kuliah',
     'Praktikum',
@@ -52,21 +63,23 @@ class _ScheduleDetailSheetState extends State<_ScheduleDetailSheet> {
   @override
   void initState() {
     super.initState();
-    _titleController = TextEditingController(text: widget.schedule.title);
-    _ruangController = TextEditingController(text: widget.schedule.ruang);
+    final schedule = widget.schedule;
+    _titleController = TextEditingController(text: schedule?.title ?? '');
+    _ruangController = TextEditingController(text: schedule?.ruang ?? '');
     _waktuMulaiController =
-        TextEditingController(text: widget.schedule.waktuMulai);
+        TextEditingController(text: schedule?.waktuMulai ?? '');
     _waktuSelesaiController =
-        TextEditingController(text: widget.schedule.waktuSelesai);
+        TextEditingController(text: schedule?.waktuSelesai ?? '');
     _dosenController =
-        TextEditingController(text: widget.schedule.dosenPengampu ?? '');
+        TextEditingController(text: schedule?.dosenPengampu ?? '');
     _sksController = TextEditingController(
-      text: widget.schedule.sks?.toString() ?? '',
+      text: schedule?.sks?.toString() ?? '',
     );
-    _selectedJenis = _jenisOptions.contains(widget.schedule.jenis)
-        ? widget.schedule.jenis
-        : 'Mata Kuliah';
-    _selectedHari = widget.schedule.hari;
+    _selectedJenis =
+        (schedule != null && _jenisOptions.contains(schedule.jenis))
+            ? schedule.jenis
+            : 'Mata Kuliah';
+    _selectedHari = schedule?.hari ?? (widget.defaultHari ?? 1);
   }
 
   @override
@@ -96,14 +109,16 @@ class _ScheduleDetailSheetState extends State<_ScheduleDetailSheet> {
   }
 
   Future<void> _handleDelete() async {
+    if (widget.schedule == null) return;
+
     final confirmed = await showDeleteConfirmDialog(
       context,
       title: 'Hapus Jadwal?',
-      itemName: widget.schedule.title,
+      itemName: widget.schedule!.title,
     );
 
     if (confirmed && mounted) {
-      await DatabaseHelper.deleteSchedule(widget.schedule.id);
+      await DatabaseHelper.deleteSchedule(widget.schedule!.id);
       if (mounted) Navigator.pop(context, true);
     }
   }
@@ -124,18 +139,32 @@ class _ScheduleDetailSheetState extends State<_ScheduleDetailSheet> {
     final sksText = _sksController.text.trim();
     final sksValue = sksText.isNotEmpty ? int.tryParse(sksText) : null;
 
-    final updatedSchedule = widget.schedule.copyWith(
-      title: title,
-      ruang: ruang,
-      waktuMulai: waktuMulai,
-      waktuSelesai: waktuSelesai,
-      jenis: _selectedJenis,
-      hari: _selectedHari,
-      dosenPengampu: _dosenController.text.trim(),
-      sks: sksValue,
-    );
-
-    await DatabaseHelper.updateSchedule(updatedSchedule);
+    if (_isNew) {
+      final newSchedule = ScheduleModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        title: title,
+        ruang: ruang,
+        waktuMulai: waktuMulai,
+        waktuSelesai: waktuSelesai,
+        jenis: _selectedJenis,
+        hari: _selectedHari,
+        dosenPengampu: _dosenController.text.trim(),
+        sks: sksValue,
+      );
+      await DatabaseHelper.addSchedule(newSchedule);
+    } else {
+      final updatedSchedule = widget.schedule!.copyWith(
+        title: title,
+        ruang: ruang,
+        waktuMulai: waktuMulai,
+        waktuSelesai: waktuSelesai,
+        jenis: _selectedJenis,
+        hari: _selectedHari,
+        dosenPengampu: _dosenController.text.trim(),
+        sks: sksValue,
+      );
+      await DatabaseHelper.updateSchedule(updatedSchedule);
+    }
     if (mounted) Navigator.pop(context, true);
   }
 
@@ -176,7 +205,7 @@ class _ScheduleDetailSheetState extends State<_ScheduleDetailSheet> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Detail Jadwal',
+                        _isNew ? 'Tambah Jadwal' : 'Detail Jadwal',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -184,15 +213,16 @@ class _ScheduleDetailSheetState extends State<_ScheduleDetailSheet> {
                         ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: _handleDelete,
-                      icon: Icon(
-                        Icons.delete_outline_rounded,
-                        color: Colors.red.shade400,
-                        size: 22,
+                    if (!_isNew)
+                      IconButton(
+                        onPressed: _handleDelete,
+                        icon: Icon(
+                          Icons.delete_outline_rounded,
+                          color: Colors.red.shade400,
+                          size: 22,
+                        ),
+                        tooltip: 'Hapus Jadwal',
                       ),
-                      tooltip: 'Hapus Jadwal',
-                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -374,7 +404,7 @@ class _ScheduleDetailSheetState extends State<_ScheduleDetailSheet> {
                             ),
                           ),
                           child: Text(
-                            'Simpan Perubahan',
+                            _isNew ? 'Simpan Jadwal' : 'Simpan Perubahan',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: ColorsTheme.teksDiKartu,

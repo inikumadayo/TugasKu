@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white" alt="Dart" />
   <img src="https://img.shields.io/badge/Hive-Local%20DB-FDB913?style=for-the-badge" alt="Hive" />
   <img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Web-blue?style=for-the-badge" alt="Platform" />
-  <img src="https://img.shields.io/badge/Version-1.3.0-brightgreen?style=for-the-badge" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-1.4.0-brightgreen?style=for-the-badge" alt="Version" />
   <img src="https://img.shields.io/badge/Theme-Rainy%20Garden%20%26%20Matcha-2E3A42?style=for-the-badge" alt="Theme" />
 </p>
 
@@ -34,12 +34,15 @@ Dibangun secara *offline-first* menggunakan **Flutter** dan database lokal **Hiv
 - **Indikator Kelas Aktif:** Penanda visual highlight otomatis pada sesi kuliah yang sedang berlangsung.
 - **Form Tambah Jadwal Ringkas:** Form bottom-sheet yang dikelompokkan secara logis dan hemat ruang (input Ruang & SKS berdampingan).
 
-### 3. ✅ Pengelola & Pelacak Tugas (Task Manager Bergaya Google Keep)
-- **Detail & Editor Catatan Bergaya Google Keep:** Ketuk kartu tugas kapan saja untuk membuka layar catatan lengkap bergaya Google Keep Notes:
-  - **Area Tulis Catatan Bersih (Borderless):** Judul dan area catatan luas tanpa garis tepi (*seamless*) untuk kenyamanan menulis instruksi atau detail tugas.
-  - **Pill Chips Interaktif:** Chip rounded untuk Mata Kuliah (kategori) dan Deadline waktu (pemilih tanggal & jam).
-  - **Penyimpanan Otomatis (Auto-Save):** Perubahan disimpan otomatis saat mengetik dengan indikator *"Tersimpan otomatis"*.
+### 3. ✅ Pengelola & Pelacak Tugas (Task Manager Catatan Tematik)
+- **Detail & Editor Catatan Tematik:** Ketuk kartu tugas kapan saja untuk membuka layar catatan tugas interaktif:
+  - **Maskot Lumut Mengintip Dinamis:** Maskot Lumut berheadphone lucu mengintip di atas sudut kanan kartu catatan, berekspresi fokus saat tugas belum selesai dan tersenyum bahagia (`^ ^`) saat tugas selesai.
+  - **Area Catatan Bergaris (Ruled Notepad Lines):** Area teks dengan garis horizontal khas buku tulis berjarak presisi untuk menulis instruksi atau detail tugas.
+  - **Pill Status & Judul Strikethrough:** Status *"Belum selesai"* / *"Selesai"* serta efek coret judul (*strikethrough*) saat tugas terselesaikan.
+  - **Kartu Tenggat Waktu:** Pemilih tanggal & jam terintegrasi dengan nuansa warna hangat *terracotta / lempung*.
+  - **Penyimpanan Otomatis (Auto-Save):** Perubahan teks, mata kuliah, dan deadline tersimpan otomatis saat mengetik dengan indikator *"Tersimpan otomatis"*.
   - **Fitur Undo & Redo:** Memulihkan atau mengulang kembali teks judul dan catatan yang diketik.
+  - **Tombol Selesai Interaktif Bawah:** Tombol lebar *"Tandai selesai"* (amber) dan *"Selesai • ketuk untuk batalkan"* (matcha).
 - **Filter Kategori:** Tinjau tugas berdasarkan *Semua*, *Belum Selesai*, dan *Selesai*.
 - **Progress Bar Mingguan:** Indikator visual progres penyelesaian tugas minggu berjalan secara dinamis.
 - **Pembersihan Otomatis (Auto-Cleanup):** Tugas yang sudah lewat deadline minggu sebelumnya dibersihkan secara otomatis setiap awal pekan (Senin).
@@ -105,10 +108,11 @@ lib/
 │       │   ├── schedule_item.dart   # Kartu item jadwal (badge jenis, ruang, SKS)
 │       │   └── task_item.dart       # Kartu item tugas dengan checkbox
 │       ├── dialogs/
-│       │   ├── add_schedule_dialog.dart # Form tambah jadwal (streamlined layout)
-│       │   ├── add_task_dialog.dart     # Form tambah tugas kuliah
 │       │   ├── delete_confirm_dialog.dart # Dialog konfirmasi hapus data
 │       │   ├── edit_profile_dialog.dart # Dialog edit nama, bio, & avatar
+│       │   ├── mascot_dialog.dart       # Dialog interaktif sapaan maskot Lumut
+│       │   ├── schedule_detail_dialog.dart # Form terpadu tambah & edit detail jadwal
+│       │   ├── task_detail_dialog.dart  # Editor catatan tematik & tambah tugas
 │       │   └── update_dialog.dart       # Dialog in-app download update & installer
 │       ├── filters/
 │       │   ├── filter.dart          # Filter chip kategori tugas
@@ -187,6 +191,20 @@ Hasil file APK release dapat ditemukan di:
 ---
 
 ## 📜 Riwayat Versi (Changelog)
+
+### v1.4.0
+- 🎨 **Editor Catatan Tugas Tematik (Notepad & Google Keep Style):**
+  - Desain visual kartu catatan bergaya notebook fisik dengan garis-garis beraturan (*ruled notepad lines*) dan kartu tenggat waktu hangat (*terracotta*).
+  - Maskot Lumut berheadphone lucu mengintip di atas kartu catatan dengan ekspresi dinamis (fokus saat tugas aktif dan bahagia `^ ^` saat tugas selesai).
+  - Layout adaptif & compact: proporsi tinggi kartu responsif dari bawah wajah maskot hingga tombol aksi bawah.
+  - Fitur **Undo & Redo** penuh pada input teks judul dan catatan tugas.
+  - Auto-save real-time dengan status tersimpan otomatis.
+- ⚡ **Unifikasi Form & Penghapusan Kode Duplikat:**
+  - **Unifikasi Task Editor:** Dialog terpisah `add_task_dialog.dart` dihapus. Tombol tambah (`+`) kini langsung membuka editor catatan detail dalam keadaan kosong dengan sistem pencegahan draft kosong (tidak menyimpan draft jika user keluar tanpa mengetik).
+  - **Unifikasi Schedule Dialog:** Dialog terpisah `add_schedule_dialog.dart` dihapus dan dilebur menjadi satu ke `schedule_detail_dialog.dart` yang menangani mode penambahan baru maupun pengeditan jadwal.
+  - Menghemat ratusan baris kode dan menjaga konsistensi UI di seluruh aplikasi.
+- 🔄 **Optimalisasi Alur Navigasi:**
+  - Ketukan pada Kartu Hero di Beranda kini mengarahkan langsung ke halaman Jadwal Kuliah.
 
 ### v1.3.0
 - 📅 **Detail & Edit Jadwal Interaktif (Schedule Detail Dialog):**

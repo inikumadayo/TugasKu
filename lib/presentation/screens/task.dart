@@ -5,7 +5,6 @@ import 'package:adistyclone/core/utils/mascot_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/task_model.dart';
 import 'package:adistyclone/presentation/widgets/cards/task_item.dart';
-import 'package:adistyclone/presentation/widgets/dialogs/add_task_dialog.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/delete_confirm_dialog.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/task_detail_dialog.dart';
 import 'package:adistyclone/presentation/widgets/filters/filter.dart';
@@ -78,9 +77,9 @@ class _TaskState extends State<Task> {
     }
   }
 
-  /// Tampilkan dialog untuk menambah tugas baru
+  /// Buka editor detail untuk menambah tugas baru (tampilan kosong)
   void _showAddTaskDialog() async {
-    await showAddTaskDialog(context);
+    await showTaskDetailDialog(context);
   }
 
   /// Konfirmasi hapus tugas

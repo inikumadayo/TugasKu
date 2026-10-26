@@ -4,7 +4,6 @@ import 'package:adistyclone/core/utils/date_time_helper.dart';
 import 'package:adistyclone/database/database_helper.dart';
 import 'package:adistyclone/models/schedule_model.dart';
 import 'package:adistyclone/presentation/widgets/cards/schedule_item.dart';
-import 'package:adistyclone/presentation/widgets/dialogs/add_schedule_dialog.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/delete_confirm_dialog.dart';
 import 'package:adistyclone/presentation/widgets/dialogs/schedule_detail_dialog.dart';
 import 'package:adistyclone/presentation/widgets/filters/filter_date.dart';
@@ -71,11 +70,11 @@ class _ScheduleState extends State<Schedule> {
 
   /// Tampilkan dialog untuk menambah jadwal baru
   void _showAddScheduleDialog() async {
-    final saved = await showAddScheduleDialog(
+    final saved = await showScheduleDetailDialog(
       context,
       defaultHari: _selectedHari,
     );
-    if (saved) _loadSchedules();
+    if (saved && mounted) _loadSchedules();
   }
 
   /// Konfirmasi hapus jadwal

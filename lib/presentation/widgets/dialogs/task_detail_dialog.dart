@@ -686,6 +686,8 @@ class _TaskKeepEditorScreenState extends State<TaskDetailScreen> {
             onTap: canRedo ? _redo : () {},
           ),
 
+          const SizedBox(width: 8),
+
           // Tombol Hapus (Opsi tambahan)
           _buildCircleIconButton(
             icon: Icons.delete_outline_rounded,
